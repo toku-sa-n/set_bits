@@ -35,6 +35,18 @@ mod tests {
         let _byte = unsafe { Box::from_raw(ptr) };
     }
 
+    fn test_tail(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set_tail_byte(ptr as usize, start_bit, num_of_bits);
+        unsafe {
+            assert_eq!(*ptr, correct_value);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
+
     #[test]
     fn set_head_byte_1() -> () {
         test_head(3, 0b11111000);
@@ -48,5 +60,10 @@ mod tests {
     #[test]
     fn set_head_byte_fully() -> () {
         test_head(0, 0b11111111);
+    }
+
+    #[test]
+    fn set_tail_byte_1() -> () {
+        test_tail(5, 16, 0b00011111);
     }
 }
