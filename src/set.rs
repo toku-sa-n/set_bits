@@ -37,4 +37,9 @@ mod tests {
     fn set_head_byte_1() -> () {
         test_head(3, 0b11111000);
     }
+
+    #[test]
+    fn set_head_byte_2() -> () {
+        test_head(5, 0b11100000);
+    }
 }
