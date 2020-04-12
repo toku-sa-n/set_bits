@@ -62,6 +62,18 @@ mod tests {
         let _byte = unsafe { Box::from_raw(ptr) };
     }
 
+    fn test_body(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set_body_byte(ptr as usize, start_bit, num_of_bits);
+        unsafe {
+            assert_eq!(*ptr, correct_value);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
+
     #[test]
     fn set_head_byte_1() -> () {
         test_head(3, 0b11111000);
@@ -94,27 +106,11 @@ mod tests {
 
     #[test]
     fn set_body_byte_1() -> () {
-        let byte: Box<u32> = Box::new(0);
-        let ptr = Box::into_raw(byte);
-
-        set_body_byte(ptr as usize, 2, 25);
-        unsafe {
-            assert_eq!(*ptr, 0xFFFF00);
-        }
-
-        let _byte = unsafe { Box::from_raw(ptr) };
+        test_body(2, 25, 0xFFFF00);
     }
 
     #[test]
     fn set_body_byte_2() -> () {
-        let byte: Box<u32> = Box::new(0);
-        let ptr = Box::into_raw(byte);
-
-        set_body_byte(ptr as usize, 5, 15);
-        unsafe {
-            assert_eq!(*ptr, 0xFF00);
-        }
-
-        let _byte = unsafe { Box::from_raw(ptr) };
+        test_body(5, 15, 0xFF00);
     }
 }
