@@ -1,6 +1,6 @@
 /// Set `num_of_bits` bits from the `start_bit`th bit of address `start_byte`.
 ///
-/// `start_byte` may be more than 7.
+/// `num_of_bits` may be more than 7.
 ///
 /// # Examples
 ///
