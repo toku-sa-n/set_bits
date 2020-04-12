@@ -104,10 +104,11 @@ mod tests {
         let byte: Box<u32> = Box::new(0);
         let ptr = Box::into_raw(byte);
 
-        set(ptr as usize, 5, 2);
+        set(ptr as usize, 5, 3);
         set(ptr as usize, 0, 3);
+        set(ptr as usize, 3, 2);
         unsafe {
-            assert_eq!(*ptr, 0b1100111);
+            assert_eq!(*ptr, 0b11111111);
         }
 
         let _byte = unsafe { Box::from_raw(ptr) };
