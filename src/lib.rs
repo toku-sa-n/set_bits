@@ -96,5 +96,6 @@ mod tests {
         test_clear(2, 3, 0b11100011);
         test_clear(1, 4, 0b11100001);
         test_clear(0, 8, 0);
+        test_clear(0, 0, 0b11111111);
     }
 }
