@@ -36,7 +36,8 @@ mod tests {
             assert_eq!(*ptr, correct_value);
         }
 
-        let byte = unsafe { Box::from_raw(ptr) };
+        // For automatic cleanup.
+        let _byte = unsafe { Box::from_raw(ptr) };
     }
 
     #[test]
