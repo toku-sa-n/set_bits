@@ -84,18 +84,42 @@ mod tests {
     }
 
     #[test]
-    fn set_within_a_byte() {
+    fn set_within_a_byte_1() -> () {
         test_set(3, 2, 0b11000);
+    }
+
+    #[test]
+    fn set_within_a_byte_2() -> () {
         test_set(1, 4, 0b11110);
+    }
+
+    #[test]
+    fn set_all_bits_of_a_byte() -> () {
         test_set(0, 8, 0b11111111);
+    }
+
+    #[test]
+    fn set_no_bits() -> () {
         test_set(0, 0, 0);
     }
 
     #[test]
-    fn clear_within_a_byte() -> () {
+    fn clear_within_a_byte_1() -> () {
         test_clear(2, 3, 0b11100011);
+    }
+
+    #[test]
+    fn clear_within_a_byte_2() -> () {
         test_clear(1, 4, 0b11100001);
+    }
+
+    #[test]
+    fn clear_all_bits_within_a_byte() -> () {
         test_clear(0, 8, 0);
+    }
+
+    #[test]
+    fn clear_no_bits() -> () {
         test_clear(0, 0, 0b11111111);
     }
 
