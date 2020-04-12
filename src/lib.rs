@@ -92,6 +92,11 @@ mod tests {
     }
 
     #[test]
+    fn set_more_than_a_byte() -> () {
+        test_set(3, 10, 0b1111111111000);
+    }
+
+    #[test]
     fn clear_within_a_byte() -> () {
         test_clear(2, 3, 0b11100011);
         test_clear(1, 4, 0b11100001);
