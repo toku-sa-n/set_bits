@@ -21,16 +21,20 @@ pub fn straddling_byte_boundaries(address: usize, start_bit: usize, num_of_bits:
 mod tests {
     use super::*;
 
-    #[test]
-    fn set_head_byte_1() -> () {
+    fn test_head(start_bit: usize, correct_value: u32) -> () {
         let byte: Box<u32> = Box::new(0);
         let ptr = Box::into_raw(byte);
 
-        set_head_byte(ptr as usize, 3);
+        set_head_byte(ptr as usize, start_bit);
         unsafe {
-            assert_eq!(*ptr, 0b11111000);
+            assert_eq!(*ptr, correct_value);
         }
 
         let _byte = unsafe { Box::from_raw(ptr) };
+    }
+
+    #[test]
+    fn set_head_byte_1() -> () {
+        test_head(3, 0b11111000);
     }
 }
