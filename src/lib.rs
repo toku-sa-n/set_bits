@@ -84,7 +84,7 @@ mod tests {
     }
 
     #[test]
-    fn set_within_a_byte_1() {
+    fn set_within_a_byte_1() -> () {
         test_set(3, 2, 0b11000);
     }
 
