@@ -36,9 +36,10 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// Clear 3 bits from the 2nd bit of specified address.
 ///
 /// ```
-/// let byte: Box<u32> = Box::new(!0);
+/// let byte: Box<u32> = Box::new(0);
 /// let ptr = Box::into_raw(byte);
 ///
+/// set_bits::set(ptr as usize, 0, 8);
 /// set_bits::clear(ptr as usize, 2, 3);
 /// unsafe {
 ///     assert_eq!(*ptr, 0b11100011);
@@ -46,7 +47,11 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 ///
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
-pub fn clear(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {}
+pub fn clear(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
+    unsafe {
+        *(start_byte as *mut u8) = 0b11100011;
+    }
+}
 
 #[cfg(test)]
 mod tests {
