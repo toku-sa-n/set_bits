@@ -27,6 +27,8 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     };
 }
 
+pub fn clear(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {}
+
 #[cfg(test)]
 mod tests {
     use super::*;
