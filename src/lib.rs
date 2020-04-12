@@ -10,14 +10,14 @@
 /// let byte: Box<u32> = Box::new(0);
 /// let ptr = Box::into_raw(byte);
 ///
-/// set_bits::set_bits(ptr as usize, 2, 3);
+/// set_bits::set(ptr as usize, 2, 3);
 /// unsafe {
 ///     assert_eq!(*ptr, 0b11100);
 /// }
 ///
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
-pub fn set_bits(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
+pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
         *(start_byte as *mut u8) = (1 << (start_bit + num_of_bits)) - (1 << start_bit);
     };
@@ -27,11 +27,11 @@ pub fn set_bits(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 mod tests {
     use super::*;
 
-    fn test_set_bits(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+    fn test_set(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
         let byte: Box<u32> = Box::new(0);
         let ptr = Box::into_raw(byte);
 
-        set_bits(ptr as usize, start_bit, num_of_bits);
+        set(ptr as usize, start_bit, num_of_bits);
         unsafe {
             assert_eq!(*ptr, correct_value);
         }
@@ -40,8 +40,8 @@ mod tests {
     }
 
     #[test]
-    fn set_bits_within_a_byte() {
-        test_set_bits(3, 2, 0b11000);
-        test_set_bits(1, 4, 0b11110);
+    fn set_within_a_byte() {
+        test_set(3, 2, 0b11000);
+        test_set(1, 4, 0b11110);
     }
 }
