@@ -18,7 +18,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn set_head_byte() -> () {
+    fn set_head_byte_1() -> () {
         let byte: Box<u32> = Box::new(0);
         let ptr = Box::into_raw(byte);
 
