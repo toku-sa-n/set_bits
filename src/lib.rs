@@ -111,6 +111,13 @@ mod tests {
             assert_eq!(*ptr, 0b11111111);
         }
 
+        clear(ptr as usize, 5, 3);
+        clear(ptr as usize, 0, 3);
+        clear(ptr as usize, 3, 2);
+        unsafe {
+            assert_eq!(*ptr, 0);
+        }
+
         let _byte = unsafe { Box::from_raw(ptr) };
     }
 }
