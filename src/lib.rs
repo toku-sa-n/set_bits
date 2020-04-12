@@ -1,3 +1,5 @@
+mod set;
+
 /// Set `num_of_bits` bits from the `start_bit`th bit of address `address`.
 ///
 /// `num_of_bits` may be more than the number of bits a byte has.
@@ -21,10 +23,7 @@
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
 pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    unsafe {
-        *(address as *mut u8) |=
-            ((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
-    };
+    set::within_a_byte(address, start_bit, num_of_bits);
 }
 
 /// Clear `num_of_bits` bits from the `start_bit`th bit of address `address`.
