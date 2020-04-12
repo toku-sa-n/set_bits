@@ -22,7 +22,7 @@
 /// ```
 pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) =
+        *(start_byte as *mut u8) |=
             ((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
     };
 }
@@ -49,7 +49,7 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// ```
 pub fn clear(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) =
+        *(start_byte as *mut u8) &=
             !((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
     }
 }
@@ -97,5 +97,27 @@ mod tests {
         test_clear(1, 4, 0b11100001);
         test_clear(0, 8, 0);
         test_clear(0, 0, 0b11111111);
+    }
+
+    #[test]
+    fn set_and_clear_within_a_byte() -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set(ptr as usize, 5, 3);
+        set(ptr as usize, 0, 3);
+        set(ptr as usize, 3, 2);
+        unsafe {
+            assert_eq!(*ptr, 0b11111111);
+        }
+
+        clear(ptr as usize, 5, 3);
+        clear(ptr as usize, 0, 3);
+        clear(ptr as usize, 3, 2);
+        unsafe {
+            assert_eq!(*ptr, 0);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
     }
 }
