@@ -11,7 +11,11 @@ fn set_head_byte(address: usize, start_bit: usize) -> () {
     }
 }
 
-fn set_tail_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {}
+fn set_tail_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
+    unsafe {
+        *(address as *mut u8) |= 0b00011111;
+    }
+}
 
 pub fn straddling_byte_boundaries(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
