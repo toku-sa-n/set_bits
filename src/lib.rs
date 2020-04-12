@@ -1,6 +1,6 @@
 /// Set `num_of_bits` bits from the `start_bit`th bit of address `start_byte`.
 ///
-/// `num_of_bits` may be more than 7.
+/// `num_of_bits` may be more than the number of bits a byte has.
 ///
 /// # Examples
 ///
@@ -29,7 +29,7 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 
 /// Clear `num_of_bits` bits from the `start_bit`th bit of address `start_byte`.
 ///
-/// `num_of_bits` may be more than 7.
+/// `num_of_bits` may be more than the number of bits a byte has.
 ///
 /// # Examples
 ///
