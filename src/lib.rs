@@ -23,6 +23,10 @@ mod set;
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
 pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
+    if num_of_bits == 0 {
+        return;
+    }
+
     set::within_a_byte(address, start_bit, num_of_bits);
 }
 
