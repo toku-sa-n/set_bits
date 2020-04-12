@@ -84,10 +84,22 @@ mod tests {
     }
 
     #[test]
-    fn set_within_a_byte() {
+    fn set_within_a_byte_1() {
         test_set(3, 2, 0b11000);
+    }
+
+    #[test]
+    fn set_within_a_byte_2() -> () {
         test_set(1, 4, 0b11110);
+    }
+
+    #[test]
+    fn set_all_bits_of_a_byte() -> () {
         test_set(0, 8, 0b11111111);
+    }
+
+    #[test]
+    fn set_no_bits() -> () {
         test_set(0, 0, 0);
     }
 
