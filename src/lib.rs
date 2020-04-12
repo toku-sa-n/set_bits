@@ -15,6 +15,9 @@
 ///     assert_eq!(*ptr, 0b11100);
 /// }
 ///
+/// // For automatic cleanup.
+/// // See the example of into_raw function.
+/// // https://doc.rust-lang.org/std/boxed/struct.Box.html
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
 pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
