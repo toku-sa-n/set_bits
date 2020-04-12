@@ -11,7 +11,11 @@ fn set_head_byte(address: usize, start_bit: usize) -> () {
     }
 }
 
-fn set_body_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {}
+fn set_body_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
+    unsafe {
+        *(address as *mut u32) |= 0xFFFF00;
+    }
+}
 
 fn set_tail_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     let mut bit_mask: u8 = (1 << (start_bit + num_of_bits) % 8) - 1;
