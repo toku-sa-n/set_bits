@@ -104,4 +104,17 @@ mod tests {
 
         let _byte = unsafe { Box::from_raw(ptr) };
     }
+
+    #[test]
+    fn set_body_byte_2() -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set_body_byte(ptr as usize, 5, 15);
+        unsafe {
+            assert_eq!(*ptr, 0xFF00);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
 }
