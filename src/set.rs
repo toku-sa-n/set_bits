@@ -70,4 +70,9 @@ mod tests {
     fn set_tail_byte_1() -> () {
         test_tail(5, 16, 0b00011111);
     }
+
+    #[test]
+    fn set_tail_byte_2() -> () {
+        test_tail(2, 25, 0b111);
+    }
 }
