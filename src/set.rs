@@ -87,4 +87,17 @@ mod tests {
     fn set_tail_byte_fully() -> () {
         test_tail(0, 16, 0b11111111);
     }
+
+    #[test]
+    fn set_body_byte_1() -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set_body_byte(ptr as usize, 2, 25);
+        unsafe {
+            assert_eq!(*ptr, 0xFFFF00);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
 }
