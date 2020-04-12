@@ -49,7 +49,8 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// ```
 pub fn clear(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) = !((1 << (start_bit + num_of_bits)) - (1 << start_bit));
+        *(start_byte as *mut u8) =
+            !((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
     }
 }
 
@@ -94,5 +95,6 @@ mod tests {
     fn clear_within_a_byte() -> () {
         test_clear(2, 3, 0b11100011);
         test_clear(1, 4, 0b11100001);
+        test_clear(0, 8, 0);
     }
 }
