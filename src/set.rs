@@ -42,4 +42,9 @@ mod tests {
     fn set_head_byte_2() -> () {
         test_head(5, 0b11100000);
     }
+
+    #[test]
+    fn set_head_byte_fully() -> () {
+        test_head(0, 0b11111111);
+    }
 }
