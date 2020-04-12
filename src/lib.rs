@@ -98,4 +98,18 @@ mod tests {
         test_clear(0, 8, 0);
         test_clear(0, 0, 0b11111111);
     }
+
+    #[test]
+    fn set_and_clear_within_a_byte() -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set(ptr as usize, 5, 2);
+        set(ptr as usize, 0, 3);
+        unsafe {
+            assert_eq!(*ptr, 0b11000111);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
 }
