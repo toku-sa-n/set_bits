@@ -114,8 +114,13 @@ mod tests {
     }
 
     #[test]
-    fn set_more_than_a_byte() -> () {
+    fn set_more_than_a_byte_1() -> () {
         test_set(3, 10, 0b1111111111000);
+    }
+
+    #[test]
+    fn set_more_than_a_byte_2() -> () {
+        test_set(6, 13, 0b1111111111111000000);
     }
 
     #[test]
