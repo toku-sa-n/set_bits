@@ -104,10 +104,22 @@ mod tests {
     }
 
     #[test]
-    fn clear_within_a_byte() -> () {
+    fn clear_within_a_byte_1() -> () {
         test_clear(2, 3, 0b11100011);
+    }
+
+    #[test]
+    fn clear_within_a_byte_2() -> () {
         test_clear(1, 4, 0b11100001);
+    }
+
+    #[test]
+    fn clear_all_bits_within_a_byte() -> () {
         test_clear(0, 8, 0);
+    }
+
+    #[test]
+    fn clear_no_bits() -> () {
         test_clear(0, 0, 0b11111111);
     }
 
