@@ -46,5 +46,6 @@ mod tests {
         test_set(3, 2, 0b11000);
         test_set(1, 4, 0b11110);
         test_set(0, 8, 0b11111111);
+        test_set(0, 0, 0);
     }
 }
