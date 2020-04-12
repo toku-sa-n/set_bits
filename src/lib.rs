@@ -70,6 +70,18 @@ mod tests {
         let _byte = unsafe { Box::from_raw(ptr) };
     }
 
+    fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+        let byte: Box<u32> = Box::new(0xFF);
+        let ptr = Box::into_raw(byte);
+
+        clear(ptr as usize, start_bit, num_of_bits);
+        unsafe {
+            assert_eq!(*ptr, correct_value);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
+
     #[test]
     fn set_within_a_byte() {
         test_set(3, 2, 0b11000);
@@ -80,15 +92,6 @@ mod tests {
 
     #[test]
     fn clear_within_a_byte() -> () {
-        let byte: Box<u32> = Box::new(0);
-        let ptr = Box::into_raw(byte);
-
-        set(ptr as usize, 0, 8);
-        clear(ptr as usize, 2, 3);
-        unsafe {
-            assert_eq!(*ptr, 0b11100011);
-        }
-
-        let byte = unsafe { Box::from_raw(ptr) };
+        test_clear(2, 3, 0b11100011);
     }
 }
