@@ -29,5 +29,15 @@ mod tests {
         }
 
         let byte = unsafe { Box::from_raw(ptr) };
+
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set_bits(ptr as usize, 4, 1);
+        unsafe {
+            assert_eq!(*ptr, 0b11110);
+        }
+
+        let byte = unsafe { Box::from_raw(ptr) };
     }
 }
