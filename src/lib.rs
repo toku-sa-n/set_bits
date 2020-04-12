@@ -49,7 +49,7 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// ```
 pub fn clear(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) = 0b11100011;
+        *(start_byte as *mut u8) = !((1 << (start_bit + num_of_bits)) - (1 << start_bit));
     }
 }
 
