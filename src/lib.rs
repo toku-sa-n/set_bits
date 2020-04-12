@@ -1,4 +1,4 @@
-/// Set `num_of_bits` bits from the `start_bit`th bit of address `start_byte`.
+/// Set `num_of_bits` bits from the `start_bit`th bit of address `address`.
 ///
 /// `num_of_bits` may be more than the number of bits a byte has.
 ///
@@ -20,14 +20,14 @@
 /// // https://doc.rust-lang.org/std/boxed/struct.Box.html
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
-pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
+pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) |=
+        *(address as *mut u8) |=
             ((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
     };
 }
 
-/// Clear `num_of_bits` bits from the `start_bit`th bit of address `start_byte`.
+/// Clear `num_of_bits` bits from the `start_bit`th bit of address `address`.
 ///
 /// `num_of_bits` may be more than the number of bits a byte has.
 ///
@@ -47,9 +47,9 @@ pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
 ///
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
-pub fn clear(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
+pub fn clear(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) &=
+        *(address as *mut u8) &=
             !((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
     }
 }
