@@ -10,7 +10,7 @@
 /// ```
 fn set_bits(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) = 0b11000;
+        *(start_byte as *mut u8) = (1 << (start_bit + num_of_bits)) - (1 << start_bit);
     };
 }
 
@@ -33,6 +33,6 @@ mod tests {
     #[test]
     fn set_bits_within_a_byte() {
         test_set_bits(3, 2, 0b11000);
-        test_set_bits(4, 1, 0b11110);
+        test_set_bits(1, 4, 0b11110);
     }
 }
