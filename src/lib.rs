@@ -22,7 +22,7 @@
 /// ```
 pub fn set(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(start_byte as *mut u8) =
+        *(start_byte as *mut u8) |=
             ((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
     };
 }
@@ -107,7 +107,7 @@ mod tests {
         set(ptr as usize, 5, 2);
         set(ptr as usize, 0, 3);
         unsafe {
-            assert_eq!(*ptr, 0b11000111);
+            assert_eq!(*ptr, 0b1100111);
         }
 
         let _byte = unsafe { Box::from_raw(ptr) };
