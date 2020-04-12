@@ -7,8 +7,17 @@
 /// Set 3 bits from the 2nd bit of specified address.
 ///
 /// ```
+/// let byte: Box<u32> = Box::new(0);
+/// let ptr = Box::into_raw(byte);
+///
+/// set_bits::set_bits(ptr as usize, 2, 3);
+/// unsafe {
+///     assert_eq!(*ptr, 0b11100);
+/// }
+///
+/// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
-fn set_bits(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
+pub fn set_bits(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
         *(start_byte as *mut u8) = (1 << (start_bit + num_of_bits)) - (1 << start_bit);
     };
