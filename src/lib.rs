@@ -8,7 +8,11 @@
 ///
 /// ```
 /// ```
-fn set_bits(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {}
+fn set_bits(start_byte: usize, start_bit: usize, num_of_bits: usize) -> () {
+    unsafe {
+        *(start_byte as *mut u8) = 0b11000;
+    };
+}
 
 #[cfg(test)]
 mod tests {
