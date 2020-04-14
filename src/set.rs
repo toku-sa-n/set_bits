@@ -36,9 +36,9 @@ fn set_tail_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
 }
 
 pub fn straddling_byte_boundaries(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    unsafe {
-        *(address as *mut u16) |= 0b1111111111000;
-    }
+    set_head_byte(address, start_bit);
+    set_body_byte(address, start_bit, num_of_bits);
+    set_tail_byte(address, start_bit, num_of_bits);
 }
 
 #[cfg(test)]
@@ -159,5 +159,10 @@ mod tests {
     #[test]
     fn set_body_byte_fully_start_bit_more_than_7() -> () {
         test_body(8, 24, 0xFF0000);
+    }
+
+    #[test]
+    fn set_body_sets_no_bit() -> () {
+        test_body(3, 10, 0);
     }
 }
