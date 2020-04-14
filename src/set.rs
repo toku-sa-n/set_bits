@@ -107,6 +107,11 @@ mod tests {
     }
 
     #[test]
+    fn set_head_byte_fully_start_bit_more_than_7() -> () {
+        test_head(8, 0b11111111_00000000);
+    }
+
+    #[test]
     fn set_tail_byte_1() -> () {
         test_tail(5, 16, 0b11111);
     }
