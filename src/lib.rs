@@ -72,7 +72,7 @@ mod tests {
     }
 
     fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let byte: Box<u32> = Box::new(0xFF);
+        let byte: Box<u32> = Box::new(!0);
         let ptr = Box::into_raw(byte);
 
         clear(ptr as usize, start_bit, num_of_bits);
@@ -125,12 +125,12 @@ mod tests {
 
     #[test]
     fn clear_within_a_byte_1() -> () {
-        test_clear(2, 3, 0b11100011);
+        test_clear(2, 3, 0b11111111_11111111_11111111_11100011);
     }
 
     #[test]
     fn clear_within_a_byte_2() -> () {
-        test_clear(1, 4, 0b11100001);
+        test_clear(1, 4, 0b11111111_11111111_11111111_11100001);
     }
 
     #[test]
@@ -140,12 +140,12 @@ mod tests {
 
     #[test]
     fn clear_all_bits_within_a_byte() -> () {
-        test_clear(0, 8, 0);
+        test_clear(0, 8, 0xffffff00);
     }
 
     #[test]
     fn clear_no_bits() -> () {
-        test_clear(0, 0, 0b11111111);
+        test_clear(0, 0, !0);
     }
 
     #[test]
