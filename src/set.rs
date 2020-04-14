@@ -132,6 +132,11 @@ mod tests {
     }
 
     #[test]
+    fn set_tail_byte_fully_start_bit_more_than_7() -> () {
+        test_tail(8, 16, 0xff);
+    }
+
+    #[test]
     fn set_body_byte_1() -> () {
         test_body(2, 25, 0xFFFF00);
     }
