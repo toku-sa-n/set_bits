@@ -122,6 +122,11 @@ mod tests {
     }
 
     #[test]
+    fn set_tail_start_bit_more_than_7() -> () {
+        test_tail(13, 16, 0b11111);
+    }
+
+    #[test]
     fn set_tail_byte_fully() -> () {
         test_tail(0, 16, 0b11111111);
     }
