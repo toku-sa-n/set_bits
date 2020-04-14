@@ -94,8 +94,13 @@ mod tests {
     }
 
     #[test]
-    fn set_all_bits_of_a_byte() -> () {
+    fn set_all_bits_of_a_byte_1() -> () {
         test_set(0, 8, 0b11111111);
+    }
+
+    #[test]
+    fn set_all_bits_of_a_byte_2() -> () {
+        test_set(8, 8, 0xff00);
     }
 
     #[test]
