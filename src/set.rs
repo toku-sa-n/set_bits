@@ -145,4 +145,9 @@ mod tests {
     fn set_body_byte_2() -> () {
         test_body(5, 15, 0xFF00);
     }
+
+    #[test]
+    fn set_body_byte_fully() -> () {
+        test_body(0, 24, 0xFF00);
+    }
 }
