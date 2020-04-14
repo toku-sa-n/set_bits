@@ -38,40 +38,45 @@ pub fn straddling_byte_boundaries(address: usize, start_bit: usize, num_of_bits:
 mod tests {
     use super::*;
 
-    fn test_head(start_bit: usize, correct_value: u32) -> () {
+    fn test_general<T: Fn(usize, usize, usize) -> ()>(
+        start_bit: usize,
+        num_of_bits: usize,
+        correct_value: u32,
+        func: T,
+    ) -> () {
         let byte: Box<u32> = Box::new(0);
         let ptr = Box::into_raw(byte);
 
-        set_head_byte(ptr as usize, start_bit);
+        func(ptr as usize, start_bit, num_of_bits);
         unsafe {
             assert_eq!(*ptr, correct_value);
         }
 
         let _byte = unsafe { Box::from_raw(ptr) };
+    }
+
+    fn test_head(start_bit: usize, correct_value: u32) -> () {
+        let func = |address, start_bit, _| {
+            set_head_byte(address, start_bit);
+        };
+
+        test_general(start_bit, 0, correct_value, func);
     }
 
     fn test_tail(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let byte: Box<u32> = Box::new(0);
-        let ptr = Box::into_raw(byte);
+        let func = |address, start_bit, num_of_bits| {
+            set_tail_byte(address, start_bit, num_of_bits);
+        };
 
-        set_tail_byte(ptr as usize, start_bit, num_of_bits);
-        unsafe {
-            assert_eq!(*ptr, correct_value);
-        }
-
-        let _byte = unsafe { Box::from_raw(ptr) };
+        test_general(start_bit, num_of_bits, correct_value, func);
     }
 
     fn test_body(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let byte: Box<u32> = Box::new(0);
-        let ptr = Box::into_raw(byte);
+        let func = |address, start_bit, num_of_bits| {
+            set_body_byte(address, start_bit, num_of_bits);
+        };
 
-        set_body_byte(ptr as usize, start_bit, num_of_bits);
-        unsafe {
-            assert_eq!(*ptr, correct_value);
-        }
-
-        let _byte = unsafe { Box::from_raw(ptr) };
+        test_general(start_bit, num_of_bits, correct_value, func);
     }
 
     #[test]
