@@ -96,6 +96,11 @@ mod tests {
     }
 
     #[test]
+    fn set_head_start_bit_more_than_7() -> () {
+        test_head(10, 0b11111100_00000000);
+    }
+
+    #[test]
     fn set_head_byte_fully() -> () {
         test_head(0, 0b11111111);
     }
