@@ -68,11 +68,16 @@ pub fn clear(address: usize, start_bit: usize, num_of_bits: usize) -> () {
 mod tests {
     use super::*;
 
-    fn test_set(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+    fn test_general<T: Fn(usize, usize, usize) -> ()>(
+        start_bit: usize,
+        num_of_bits: usize,
+        correct_value: u32,
+        func: T,
+    ) -> () {
         let byte: Box<u32> = Box::new(0);
         let ptr = Box::into_raw(byte);
 
-        set(ptr as usize, start_bit, num_of_bits);
+        func(ptr as usize, start_bit, num_of_bits);
         unsafe {
             assert_eq!(*ptr, correct_value);
         }
@@ -81,16 +86,23 @@ mod tests {
         let _byte = unsafe { Box::from_raw(ptr) };
     }
 
+    fn test_set(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+        let func = |address, start_bit, num_of_bits| {
+            set(address, start_bit, num_of_bits);
+        };
+
+        test_general(start_bit, num_of_bits, correct_value, func);
+    }
+
     fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let byte: Box<u32> = Box::new(0xFF);
-        let ptr = Box::into_raw(byte);
+        let func = |address, start_bit, num_of_bits| {
+            unsafe {
+                *(address as *mut u32) = 0xFF;
+            }
+            clear(address, start_bit, num_of_bits);
+        };
 
-        clear(ptr as usize, start_bit, num_of_bits);
-        unsafe {
-            assert_eq!(*ptr, correct_value);
-        }
-
-        let _byte = unsafe { Box::from_raw(ptr) };
+        test_general(start_bit, num_of_bits, correct_value, func);
     }
 
     #[test]
