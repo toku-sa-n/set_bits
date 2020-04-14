@@ -59,8 +59,8 @@ pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// ```
 pub fn clear(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
-        *(address as *mut u8) &=
-            !((1 << (start_bit + num_of_bits)) as u16 - (1 << start_bit) as u16) as u8;
+        *((address + start_bit / 8) as *mut u8) &=
+            !((1 << (start_bit % 8 + num_of_bits)) as u16 - (1 << (start_bit % 8)) as u16) as u8;
     }
 }
 
@@ -97,7 +97,7 @@ mod tests {
     fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
         let func = |address, start_bit, num_of_bits| {
             unsafe {
-                *(address as *mut u32) = 0xFF;
+                *(address as *mut u32) = !0;
             }
             clear(address, start_bit, num_of_bits);
         };
@@ -116,12 +116,17 @@ mod tests {
     }
 
     #[test]
-    fn set_all_bits_of_a_byte() -> () {
+    fn set_all_bits_of_a_byte_1() -> () {
         test_set(0, 8, 0b11111111);
     }
 
     #[test]
-    fn set_no_bits() -> () {
+    fn set_all_bits_of_a_byte_2() -> () {
+        test_set(8, 8, 0xff00);
+    }
+
+    #[test]
+    fn set_no_bits_1() -> () {
         test_set(0, 0, 0);
     }
 
@@ -136,23 +141,43 @@ mod tests {
     }
 
     #[test]
+    fn set_no_bits_2() -> () {
+        test_set(8, 0, 0);
+    }
+
+    #[test]
+    fn set_start_bit_more_than_7_1() -> () {
+        test_set(10, 3, 0b11100_00000000);
+    }
+
+    #[test]
+    fn set_start_bit_more_than_7_2() -> () {
+        test_set(26, 5, 0b01111100_00000000_00000000_00000000);
+    }
+
+    #[test]
     fn clear_within_a_byte_1() -> () {
-        test_clear(2, 3, 0b11100011);
+        test_clear(2, 3, 0b11111111_11111111_11111111_11100011);
     }
 
     #[test]
     fn clear_within_a_byte_2() -> () {
-        test_clear(1, 4, 0b11100001);
+        test_clear(1, 4, 0b11111111_11111111_11111111_11100001);
+    }
+
+    #[test]
+    fn clear_start_bit_more_than_7_1() -> () {
+        test_clear(10, 3, 0b11111111_11111111_11100011_11111111);
     }
 
     #[test]
     fn clear_all_bits_within_a_byte() -> () {
-        test_clear(0, 8, 0);
+        test_clear(0, 8, 0xffffff00);
     }
 
     #[test]
     fn clear_no_bits() -> () {
-        test_clear(0, 0, 0b11111111);
+        test_clear(0, 0, !0);
     }
 
     #[test]
