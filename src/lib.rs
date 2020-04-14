@@ -134,6 +134,11 @@ mod tests {
     }
 
     #[test]
+    fn clear_start_bit_more_than_7_1() -> () {
+        test_clear(10, 3, 0b11111111_11111111_11100011_11111111);
+    }
+
+    #[test]
     fn clear_all_bits_within_a_byte() -> () {
         test_clear(0, 8, 0);
     }
