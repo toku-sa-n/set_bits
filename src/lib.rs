@@ -1,3 +1,5 @@
+mod set;
+
 /// Set `num_of_bits` bits from the `start_bit`th bit of address `address`.
 ///
 /// `num_of_bits` may be more than the number of bits a byte has.
@@ -21,10 +23,18 @@
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
 pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    unsafe {
-        *((address + start_bit / 8) as *mut u8) |=
-            ((1 << (start_bit % 8 + num_of_bits)) as u16 - (1 << (start_bit % 8)) as u16) as u8;
-    };
+    if num_of_bits == 0 {
+        return;
+    }
+
+    let bit_string_straddles_byte_boundaries: bool =
+        start_bit / 8 != (start_bit + num_of_bits - 1) / 8;
+
+    if bit_string_straddles_byte_boundaries {
+        set::straddling_byte_boundaries(address, start_bit, num_of_bits);
+    } else {
+        set::within_a_byte(address, start_bit, num_of_bits);
+    }
 }
 
 /// Clear `num_of_bits` bits from the `start_bit`th bit of address `address`.
@@ -58,11 +68,16 @@ pub fn clear(address: usize, start_bit: usize, num_of_bits: usize) -> () {
 mod tests {
     use super::*;
 
-    fn test_set(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+    fn test_general<T: Fn(usize, usize, usize) -> ()>(
+        start_bit: usize,
+        num_of_bits: usize,
+        correct_value: u32,
+        func: T,
+    ) -> () {
         let byte: Box<u32> = Box::new(0);
         let ptr = Box::into_raw(byte);
 
-        set(ptr as usize, start_bit, num_of_bits);
+        func(ptr as usize, start_bit, num_of_bits);
         unsafe {
             assert_eq!(*ptr, correct_value);
         }
@@ -71,16 +86,23 @@ mod tests {
         let _byte = unsafe { Box::from_raw(ptr) };
     }
 
+    fn test_set(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+        let func = |address, start_bit, num_of_bits| {
+            set(address, start_bit, num_of_bits);
+        };
+
+        test_general(start_bit, num_of_bits, correct_value, func);
+    }
+
     fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let byte: Box<u32> = Box::new(!0);
-        let ptr = Box::into_raw(byte);
+        let func = |address, start_bit, num_of_bits| {
+            unsafe {
+                *(address as *mut u32) = !0;
+            }
+            clear(address, start_bit, num_of_bits);
+        };
 
-        clear(ptr as usize, start_bit, num_of_bits);
-        unsafe {
-            assert_eq!(*ptr, correct_value);
-        }
-
-        let _byte = unsafe { Box::from_raw(ptr) };
+        test_general(start_bit, num_of_bits, correct_value, func);
     }
 
     #[test]
@@ -106,6 +128,21 @@ mod tests {
     #[test]
     fn set_no_bits_1() -> () {
         test_set(0, 0, 0);
+    }
+
+    #[test]
+    fn set_more_than_a_byte_1() -> () {
+        test_set(3, 10, 0b1111111111000);
+    }
+
+    #[test]
+    fn set_more_than_a_byte_2() -> () {
+        test_set(6, 13, 0b1111111111111000000);
+    }
+
+    #[test]
+    fn set_all_bits_of_u32() -> () {
+        test_set(0, 32, 0xFFFFFFFF);
     }
 
     #[test]
