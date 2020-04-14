@@ -12,8 +12,14 @@ fn set_head_byte(address: usize, start_bit: usize) -> () {
 }
 
 fn set_body_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    unsafe {
-        *(address as *mut u32) |= 0xFFFF00;
+    let first_byte: usize = address + start_bit / 8;
+    let last_byte: usize = address + (start_bit + num_of_bits - 1) / 8;
+
+    // Head and tail must exist. However, body may not.
+    for ptr in first_byte + 1..last_byte {
+        unsafe {
+            *(ptr as *mut u8) = 0xFF;
+        }
     }
 }
 
