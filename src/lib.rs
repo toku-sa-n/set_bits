@@ -109,6 +109,11 @@ mod tests {
     }
 
     #[test]
+    fn set_start_bit_more_than_7_2() -> () {
+        test_set(26, 5, 0b1111100000000000000000000000000);
+    }
+
+    #[test]
     fn clear_within_a_byte_1() -> () {
         test_clear(2, 3, 0b11100011);
     }
