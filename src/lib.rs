@@ -115,12 +115,12 @@ mod tests {
 
     #[test]
     fn set_start_bit_more_than_7_1() -> () {
-        test_set(10, 3, 0b1110000000000);
+        test_set(10, 3, 0b11100_00000000);
     }
 
     #[test]
     fn set_start_bit_more_than_7_2() -> () {
-        test_set(26, 5, 0b1111100000000000000000000000000);
+        test_set(26, 5, 0b01111100_00000000_00000000_00000000);
     }
 
     #[test]
