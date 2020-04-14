@@ -31,7 +31,7 @@ fn set_tail_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     }
 
     unsafe {
-        *(address as *mut u8) |= bit_mask;
+        *((address + (start_bit + num_of_bits - 1) / 8) as *mut u8) |= bit_mask;
     }
 }
 
