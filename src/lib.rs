@@ -104,8 +104,13 @@ mod tests {
     }
 
     #[test]
-    fn set_no_bits() -> () {
+    fn set_no_bits_1() -> () {
         test_set(0, 0, 0);
+    }
+
+    #[test]
+    fn set_no_bits_2() -> () {
+        test_set(8, 0, 0);
     }
 
     #[test]
