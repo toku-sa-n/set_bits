@@ -150,4 +150,9 @@ mod tests {
     fn set_body_byte_fully() -> () {
         test_body(0, 24, 0xFF00);
     }
+
+    #[test]
+    fn set_body_byte_start_bit_more_than_7() -> () {
+        test_body(13, 15, 0xFF0000);
+    }
 }
