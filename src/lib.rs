@@ -153,40 +153,45 @@ mod tests {
         }
     }
 
-    fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let func = |address, start_bit, num_of_bits| {
-            unsafe {
-                *(address as *mut u32) = !0;
-            }
-            clear(address, start_bit, num_of_bits);
-        };
+    #[cfg(test)]
+    mod clear {
+        use super::*;
 
-        test_general(start_bit, num_of_bits, correct_value, func);
-    }
+        fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+            let func = |address, start_bit, num_of_bits| {
+                unsafe {
+                    *(address as *mut u32) = !0;
+                }
+                clear(address, start_bit, num_of_bits);
+            };
 
-    #[test]
-    fn clear_within_a_byte_1() -> () {
-        test_clear(2, 3, 0b11111111_11111111_11111111_11100011);
-    }
+            test_general(start_bit, num_of_bits, correct_value, func);
+        }
 
-    #[test]
-    fn clear_within_a_byte_2() -> () {
-        test_clear(1, 4, 0b11111111_11111111_11111111_11100001);
-    }
+        #[test]
+        fn clear_within_a_byte_1() -> () {
+            test_clear(2, 3, 0b11111111_11111111_11111111_11100011);
+        }
 
-    #[test]
-    fn clear_start_bit_more_than_7_1() -> () {
-        test_clear(10, 3, 0b11111111_11111111_11100011_11111111);
-    }
+        #[test]
+        fn clear_within_a_byte_2() -> () {
+            test_clear(1, 4, 0b11111111_11111111_11111111_11100001);
+        }
 
-    #[test]
-    fn clear_all_bits_within_a_byte() -> () {
-        test_clear(0, 8, 0xffffff00);
-    }
+        #[test]
+        fn clear_start_bit_more_than_7_1() -> () {
+            test_clear(10, 3, 0b11111111_11111111_11100011_11111111);
+        }
 
-    #[test]
-    fn clear_no_bits() -> () {
-        test_clear(0, 0, !0);
+        #[test]
+        fn clear_all_bits_within_a_byte() -> () {
+            test_clear(0, 8, 0xffffff00);
+        }
+
+        #[test]
+        fn clear_no_bits() -> () {
+            test_clear(0, 0, !0);
+        }
     }
 
     #[test]
