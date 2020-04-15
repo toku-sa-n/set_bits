@@ -1,11 +1,53 @@
-enum Operation {
+pub enum Operation {
     Set,
     Clear,
 }
 
 pub trait EditBitFunc = Fn(*mut u8, u8) -> ();
 
-pub fn within_a_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
+pub fn bit_operation(
+    address: usize,
+    start_bit: usize,
+    num_of_bits: usize,
+    operation: Operation,
+) -> () {
+    match operation {
+        Operation::Set => {
+            let set = |dest: *mut u8, bit_mask| unsafe {
+                *dest |= bit_mask;
+            };
+
+            edit_bit(address, start_bit, num_of_bits, set);
+        }
+        Operation::Clear => {
+            let clear = |dest: *mut u8, bit_mask: u8| unsafe {
+                *dest &= !bit_mask;
+            };
+
+            edit_bit(address, start_bit, num_of_bits, clear);
+        }
+    }
+}
+
+fn edit_bit<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
+where
+    T: EditBitFunc,
+{
+    if num_of_bits == 0 {
+        return;
+    }
+
+    let bit_string_straddles_byte_boundaries: bool =
+        start_bit / 8 != (start_bit + num_of_bits - 1) / 8;
+
+    if bit_string_straddles_byte_boundaries {
+        straddling_byte_boundaries(address, start_bit, num_of_bits, edit_bit);
+    } else {
+        within_a_byte(address, start_bit, num_of_bits, edit_bit);
+    }
+}
+
+fn within_a_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
 where
     T: EditBitFunc,
 {
@@ -15,7 +57,7 @@ where
     edit_bit(dest, bit_mask);
 }
 
-fn set_head_byte<T>(address: usize, start_bit: usize, edit_bit: T) -> ()
+fn set_head_byte<T>(address: usize, start_bit: usize, edit_bit: &T) -> ()
 where
     T: EditBitFunc,
 {
@@ -25,7 +67,7 @@ where
     edit_bit(dest, bit_mask);
 }
 
-fn set_body_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
+fn set_body_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: &T) -> ()
 where
     T: EditBitFunc,
 {
@@ -38,7 +80,7 @@ where
     }
 }
 
-fn set_tail_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
+fn set_tail_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: &T) -> ()
 where
     T: EditBitFunc,
 {
@@ -52,14 +94,18 @@ where
     edit_bit(dest, bit_mask);
 }
 
-pub fn straddling_byte_boundaries(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    let set_bit = |dest: *mut u8, bit_mask| unsafe {
-        *dest |= bit_mask;
-    };
-
-    set_head_byte(address, start_bit, set_bit);
-    set_body_byte(address, start_bit, num_of_bits, set_bit);
-    set_tail_byte(address, start_bit, num_of_bits, set_bit);
+pub fn straddling_byte_boundaries<T>(
+    address: usize,
+    start_bit: usize,
+    num_of_bits: usize,
+    edit_bit: T,
+) -> ()
+where
+    T: EditBitFunc,
+{
+    set_head_byte(address, start_bit, &edit_bit);
+    set_body_byte(address, start_bit, num_of_bits, &edit_bit);
+    set_tail_byte(address, start_bit, num_of_bits, &edit_bit);
 }
 
 #[cfg(test)]
@@ -89,7 +135,7 @@ mod tests {
                 *dest |= bit_mask;
             };
 
-            set_head_byte(address, start_bit, set_bit);
+            set_head_byte(address, start_bit, &set_bit);
         };
 
         test_general(start_bit, 0, correct_value, func);
@@ -101,7 +147,7 @@ mod tests {
                 *dest |= bit_mask;
             };
 
-            set_tail_byte(address, start_bit, num_of_bits, set_bit);
+            set_tail_byte(address, start_bit, num_of_bits, &set_bit);
         };
 
         test_general(start_bit, num_of_bits, correct_value, func);
@@ -113,7 +159,7 @@ mod tests {
                 *dest |= bit_mask;
             };
 
-            set_body_byte(address, start_bit, num_of_bits, set_bit);
+            set_body_byte(address, start_bit, num_of_bits, &set_bit);
         };
 
         test_general(start_bit, num_of_bits, correct_value, func);
