@@ -3,9 +3,11 @@ enum Operation {
     Clear,
 }
 
+pub trait EditBitFunc = Fn(*mut u8, u8) -> ();
+
 pub fn within_a_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
 where
-    T: Fn(*mut u8, u8) -> (),
+    T: EditBitFunc,
 {
     let dest: *mut u8 = (address + start_bit / 8) as *mut u8;
     let bit_mask: u8 =
@@ -15,7 +17,7 @@ where
 
 fn set_head_byte<T>(address: usize, start_bit: usize, edit_bit: T) -> ()
 where
-    T: Fn(*mut u8, u8) -> (),
+    T: EditBitFunc,
 {
     let dest: *mut u8 = (address + start_bit / 8) as *mut u8;
     let bit_mask: u8 = ((1 << 8) as u16 - (1 << (start_bit % 8)) as u16) as u8;
@@ -25,7 +27,7 @@ where
 
 fn set_body_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
 where
-    T: Fn(*mut u8, u8) -> (),
+    T: EditBitFunc,
 {
     let first_byte: usize = address + start_bit / 8;
     let last_byte: usize = address + (start_bit + num_of_bits - 1) / 8;
@@ -38,7 +40,7 @@ where
 
 fn set_tail_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
 where
-    T: Fn(*mut u8, u8) -> (),
+    T: EditBitFunc,
 {
     let mut bit_mask: u8 = (1 << (start_bit + num_of_bits) % 8) - 1;
     if bit_mask == 0 {
