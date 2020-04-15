@@ -1,6 +1,7 @@
 #![feature(trait_alias)]
 
 mod bit_operation;
+mod bit_string;
 
 /// Set `num_of_bits` bits from the `start_bit`th bit of address `address`.
 ///
