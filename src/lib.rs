@@ -157,7 +157,7 @@ mod tests {
     mod clear {
         use super::*;
 
-        fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+        fn test(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
             let func = |address, start_bit, num_of_bits| {
                 unsafe {
                     *(address as *mut u32) = !0;
@@ -170,27 +170,27 @@ mod tests {
 
         #[test]
         fn within_a_byte_1() -> () {
-            test_clear(2, 3, 0b11111111_11111111_11111111_11100011);
+            test(2, 3, 0b11111111_11111111_11111111_11100011);
         }
 
         #[test]
         fn within_a_byte_2() -> () {
-            test_clear(1, 4, 0b11111111_11111111_11111111_11100001);
+            test(1, 4, 0b11111111_11111111_11111111_11100001);
         }
 
         #[test]
         fn start_bit_more_than_7_1() -> () {
-            test_clear(10, 3, 0b11111111_11111111_11100011_11111111);
+            test(10, 3, 0b11111111_11111111_11100011_11111111);
         }
 
         #[test]
         fn all_bits_within_a_byte() -> () {
-            test_clear(0, 8, 0xffffff00);
+            test(0, 8, 0xffffff00);
         }
 
         #[test]
         fn no_bits() -> () {
-            test_clear(0, 0, !0);
+            test(0, 0, !0);
         }
     }
 
