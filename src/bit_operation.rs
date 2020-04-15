@@ -3,47 +3,61 @@ enum Operation {
     Clear,
 }
 
-pub fn within_a_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    unsafe {
-        *((address + start_bit / 8) as *mut u8) |=
-            ((1 << (start_bit % 8 + num_of_bits)) as u16 - (1 << (start_bit % 8)) as u16) as u8;
-    };
+pub fn within_a_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
+where
+    T: Fn(*mut u8, u8) -> (),
+{
+    let dest: *mut u8 = (address + start_bit / 8) as *mut u8;
+    let bit_mask: u8 =
+        ((1 << (start_bit % 8 + num_of_bits)) as u16 - (1 << (start_bit % 8)) as u16) as u8;
+    edit_bit(dest, bit_mask);
 }
 
-fn set_head_byte(address: usize, start_bit: usize) -> () {
-    unsafe {
-        *((address + start_bit / 8) as *mut u8) |=
-            ((1 << 8) as u16 - (1 << (start_bit % 8)) as u16) as u8;
-    }
+fn set_head_byte<T>(address: usize, start_bit: usize, edit_bit: T) -> ()
+where
+    T: Fn(*mut u8, u8) -> (),
+{
+    let dest: *mut u8 = (address + start_bit / 8) as *mut u8;
+    let bit_mask: u8 = ((1 << 8) as u16 - (1 << (start_bit % 8)) as u16) as u8;
+
+    edit_bit(dest, bit_mask);
 }
 
-fn set_body_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
+fn set_body_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
+where
+    T: Fn(*mut u8, u8) -> (),
+{
     let first_byte: usize = address + start_bit / 8;
     let last_byte: usize = address + (start_bit + num_of_bits - 1) / 8;
 
     // Head and tail must exist. However, body may not.
     for ptr in first_byte + 1..last_byte {
-        unsafe {
-            *(ptr as *mut u8) = 0xFF;
-        }
+        edit_bit(ptr as *mut u8, 0xFF);
     }
 }
 
-fn set_tail_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
+fn set_tail_byte<T>(address: usize, start_bit: usize, num_of_bits: usize, edit_bit: T) -> ()
+where
+    T: Fn(*mut u8, u8) -> (),
+{
     let mut bit_mask: u8 = (1 << (start_bit + num_of_bits) % 8) - 1;
     if bit_mask == 0 {
         bit_mask = 0xFF;
     }
 
-    unsafe {
-        *((address + (start_bit + num_of_bits - 1) / 8) as *mut u8) |= bit_mask;
-    }
+    let dest: *mut u8 = (address + (start_bit + num_of_bits - 1) / 8) as *mut u8;
+
+    edit_bit(dest, bit_mask);
 }
 
 pub fn straddling_byte_boundaries(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    set_head_byte(address, start_bit);
-    set_body_byte(address, start_bit, num_of_bits);
-    set_tail_byte(address, start_bit, num_of_bits);
+    let set_bit = |dest: *mut u8, bit_mask| unsafe {
+        *dest |= bit_mask;
+    };
+
+    set_head_byte(address, start_bit, set_bit);
+    set_body_byte(address, start_bit, num_of_bits, set_bit);
+    set_tail_byte(address, start_bit, num_of_bits, set_bit);
 }
 
 #[cfg(test)]
@@ -69,7 +83,11 @@ mod tests {
 
     fn test_head(start_bit: usize, correct_value: u32) -> () {
         let func = |address, start_bit, _| {
-            set_head_byte(address, start_bit);
+            let set_bit = |dest: *mut u8, bit_mask| unsafe {
+                *dest |= bit_mask;
+            };
+
+            set_head_byte(address, start_bit, set_bit);
         };
 
         test_general(start_bit, 0, correct_value, func);
@@ -77,7 +95,11 @@ mod tests {
 
     fn test_tail(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
         let func = |address, start_bit, num_of_bits| {
-            set_tail_byte(address, start_bit, num_of_bits);
+            let set_bit = |dest: *mut u8, bit_mask| unsafe {
+                *dest |= bit_mask;
+            };
+
+            set_tail_byte(address, start_bit, num_of_bits, set_bit);
         };
 
         test_general(start_bit, num_of_bits, correct_value, func);
@@ -85,7 +107,11 @@ mod tests {
 
     fn test_body(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
         let func = |address, start_bit, num_of_bits| {
-            set_body_byte(address, start_bit, num_of_bits);
+            let set_bit = |dest: *mut u8, bit_mask| unsafe {
+                *dest |= bit_mask;
+            };
+
+            set_body_byte(address, start_bit, num_of_bits, set_bit);
         };
 
         test_general(start_bit, num_of_bits, correct_value, func);

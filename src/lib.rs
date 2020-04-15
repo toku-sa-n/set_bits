@@ -33,7 +33,11 @@ pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     if bit_string_straddles_byte_boundaries {
         bit_operation::straddling_byte_boundaries(address, start_bit, num_of_bits);
     } else {
-        bit_operation::within_a_byte(address, start_bit, num_of_bits);
+        let set_bit = |dest: *mut u8, bit_mask| unsafe {
+            *dest |= bit_mask;
+        };
+
+        bit_operation::within_a_byte(address, start_bit, num_of_bits, set_bit);
     }
 }
 
