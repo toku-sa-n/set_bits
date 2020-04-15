@@ -169,27 +169,27 @@ mod tests {
         }
 
         #[test]
-        fn clear_within_a_byte_1() -> () {
+        fn within_a_byte_1() -> () {
             test_clear(2, 3, 0b11111111_11111111_11111111_11100011);
         }
 
         #[test]
-        fn clear_within_a_byte_2() -> () {
+        fn within_a_byte_2() -> () {
             test_clear(1, 4, 0b11111111_11111111_11111111_11100001);
         }
 
         #[test]
-        fn clear_start_bit_more_than_7_1() -> () {
+        fn start_bit_more_than_7_1() -> () {
             test_clear(10, 3, 0b11111111_11111111_11100011_11111111);
         }
 
         #[test]
-        fn clear_all_bits_within_a_byte() -> () {
+        fn all_bits_within_a_byte() -> () {
             test_clear(0, 8, 0xffffff00);
         }
 
         #[test]
-        fn clear_no_bits() -> () {
+        fn no_bits() -> () {
             test_clear(0, 0, !0);
         }
     }
