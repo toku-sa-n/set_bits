@@ -54,10 +54,12 @@ pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
 pub fn clear(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    unsafe {
-        *((address + start_bit / 8) as *mut u8) &=
-            !((1 << (start_bit % 8 + num_of_bits)) as u16 - (1 << (start_bit % 8)) as u16) as u8;
-    }
+    bit_operation::bit_operation(
+        address,
+        start_bit,
+        num_of_bits,
+        bit_operation::Operation::Clear,
+    );
 }
 
 #[cfg(test)]
