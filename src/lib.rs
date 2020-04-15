@@ -86,103 +86,112 @@ mod tests {
         let _byte = unsafe { Box::from_raw(ptr) };
     }
 
-    fn test_set(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let func = |address, start_bit, num_of_bits| {
-            set(address, start_bit, num_of_bits);
-        };
+    #[cfg(test)]
+    mod set {
+        use super::*;
+        fn test(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+            let func = |address, start_bit, num_of_bits| {
+                set(address, start_bit, num_of_bits);
+            };
 
-        test_general(start_bit, num_of_bits, correct_value, func);
+            test_general(start_bit, num_of_bits, correct_value, func);
+        }
+
+        #[test]
+        fn within_a_byte_1() -> () {
+            test(3, 2, 0b11000);
+        }
+
+        #[test]
+        fn within_a_byte_2() -> () {
+            test(1, 4, 0b11110);
+        }
+
+        #[test]
+        fn all_bits_of_a_byte_1() -> () {
+            test(0, 8, 0b11111111);
+        }
+
+        #[test]
+        fn all_bits_of_a_byte_2() -> () {
+            test(8, 8, 0xff00);
+        }
+
+        #[test]
+        fn no_bits_1() -> () {
+            test(0, 0, 0);
+        }
+
+        #[test]
+        fn more_than_a_byte_1() -> () {
+            test(3, 10, 0b1111111111000);
+        }
+
+        #[test]
+        fn more_than_a_byte_2() -> () {
+            test(6, 13, 0b1111111111111000000);
+        }
+
+        #[test]
+        fn all_bits_of_u32() -> () {
+            test(0, 32, 0xFFFFFFFF);
+        }
+
+        #[test]
+        fn no_bits_2() -> () {
+            test(8, 0, 0);
+        }
+
+        #[test]
+        fn start_bit_more_than_7_1() -> () {
+            test(10, 3, 0b11100_00000000);
+        }
+
+        #[test]
+        fn start_bit_more_than_7_2() -> () {
+            test(26, 5, 0b01111100_00000000_00000000_00000000);
+        }
     }
 
-    fn test_clear(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
-        let func = |address, start_bit, num_of_bits| {
-            unsafe {
-                *(address as *mut u32) = !0;
-            }
-            clear(address, start_bit, num_of_bits);
-        };
+    #[cfg(test)]
+    mod clear {
+        use super::*;
 
-        test_general(start_bit, num_of_bits, correct_value, func);
-    }
+        fn test(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+            let func = |address, start_bit, num_of_bits| {
+                unsafe {
+                    *(address as *mut u32) = !0;
+                }
+                clear(address, start_bit, num_of_bits);
+            };
 
-    #[test]
-    fn set_within_a_byte_1() -> () {
-        test_set(3, 2, 0b11000);
-    }
+            test_general(start_bit, num_of_bits, correct_value, func);
+        }
 
-    #[test]
-    fn set_within_a_byte_2() -> () {
-        test_set(1, 4, 0b11110);
-    }
+        #[test]
+        fn within_a_byte_1() -> () {
+            test(2, 3, 0b11111111_11111111_11111111_11100011);
+        }
 
-    #[test]
-    fn set_all_bits_of_a_byte_1() -> () {
-        test_set(0, 8, 0b11111111);
-    }
+        #[test]
+        fn within_a_byte_2() -> () {
+            test(1, 4, 0b11111111_11111111_11111111_11100001);
+        }
 
-    #[test]
-    fn set_all_bits_of_a_byte_2() -> () {
-        test_set(8, 8, 0xff00);
-    }
+        #[test]
+        fn start_bit_more_than_7_1() -> () {
+            test(10, 3, 0b11111111_11111111_11100011_11111111);
+        }
 
-    #[test]
-    fn set_no_bits_1() -> () {
-        test_set(0, 0, 0);
-    }
+        #[test]
+        fn all_bits_within_a_byte() -> () {
+            test(0, 8, 0xffffff00);
+        }
 
-    #[test]
-    fn set_more_than_a_byte_1() -> () {
-        test_set(3, 10, 0b1111111111000);
-    }
-
-    #[test]
-    fn set_more_than_a_byte_2() -> () {
-        test_set(6, 13, 0b1111111111111000000);
-    }
-
-    #[test]
-    fn set_all_bits_of_u32() -> () {
-        test_set(0, 32, 0xFFFFFFFF);
-    }
-
-    #[test]
-    fn set_no_bits_2() -> () {
-        test_set(8, 0, 0);
-    }
-
-    #[test]
-    fn set_start_bit_more_than_7_1() -> () {
-        test_set(10, 3, 0b11100_00000000);
-    }
-
-    #[test]
-    fn set_start_bit_more_than_7_2() -> () {
-        test_set(26, 5, 0b01111100_00000000_00000000_00000000);
-    }
-
-    #[test]
-    fn clear_within_a_byte_1() -> () {
-        test_clear(2, 3, 0b11111111_11111111_11111111_11100011);
-    }
-
-    #[test]
-    fn clear_within_a_byte_2() -> () {
-        test_clear(1, 4, 0b11111111_11111111_11111111_11100001);
-    }
-
-    #[test]
-    fn clear_start_bit_more_than_7_1() -> () {
-        test_clear(10, 3, 0b11111111_11111111_11100011_11111111);
-    }
-
-    #[test]
-    fn clear_all_bits_within_a_byte() -> () {
-        test_clear(0, 8, 0xffffff00);
-    }
-
-    #[test]
-    fn clear_no_bits() -> () {
-        test_clear(0, 0, !0);
+        #[test]
+        fn no_bits() -> () {
+            test(0, 0, !0);
+        }
     }
 
     #[test]
