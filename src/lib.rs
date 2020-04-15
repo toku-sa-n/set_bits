@@ -1,4 +1,6 @@
-mod set;
+#![feature(trait_alias)]
+
+mod bit_operation;
 
 /// Set `num_of_bits` bits from the `start_bit`th bit of address `address`.
 ///
@@ -23,18 +25,12 @@ mod set;
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
 pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    if num_of_bits == 0 {
-        return;
-    }
-
-    let bit_string_straddles_byte_boundaries: bool =
-        start_bit / 8 != (start_bit + num_of_bits - 1) / 8;
-
-    if bit_string_straddles_byte_boundaries {
-        set::straddling_byte_boundaries(address, start_bit, num_of_bits);
-    } else {
-        set::within_a_byte(address, start_bit, num_of_bits);
-    }
+    bit_operation::bit_operation(
+        address,
+        start_bit,
+        num_of_bits,
+        bit_operation::Operation::Set,
+    );
 }
 
 /// Clear `num_of_bits` bits from the `start_bit`th bit of address `address`.
@@ -58,10 +54,12 @@ pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// let byte = unsafe { Box::from_raw(ptr) };
 /// ```
 pub fn clear(address: usize, start_bit: usize, num_of_bits: usize) -> () {
-    unsafe {
-        *((address + start_bit / 8) as *mut u8) &=
-            !((1 << (start_bit % 8 + num_of_bits)) as u16 - (1 << (start_bit % 8)) as u16) as u8;
-    }
+    bit_operation::bit_operation(
+        address,
+        start_bit,
+        num_of_bits,
+        bit_operation::Operation::Clear,
+    );
 }
 
 #[cfg(test)]
@@ -179,6 +177,21 @@ mod tests {
         }
 
         #[test]
+        fn more_than_a_byte_1() -> () {
+            test(3, 10, 0b11111111_11111111_11100000_00000111);
+        }
+
+        #[test]
+        fn more_than_a_byte_2() -> () {
+            test(11, 10, 0b11111111_11100000_00000111_11111111);
+        }
+
+        #[test]
+        fn all_bits_of_u32() -> () {
+            test(0, 32, 0);
+        }
+
+        #[test]
         fn start_bit_more_than_7_1() -> () {
             test(10, 3, 0b11111111_11111111_11100011_11111111);
         }
@@ -209,6 +222,28 @@ mod tests {
         clear(ptr as usize, 5, 3);
         clear(ptr as usize, 0, 3);
         clear(ptr as usize, 3, 2);
+        unsafe {
+            assert_eq!(*ptr, 0);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
+
+    #[test]
+    fn set_and_clear_more_than_a_byte() -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set(ptr as usize, 0, 10);
+        set(ptr as usize, 10, 10);
+        set(ptr as usize, 20, 12);
+        unsafe {
+            assert_eq!(*ptr, !0);
+        }
+
+        clear(ptr as usize, 0, 10);
+        clear(ptr as usize, 10, 10);
+        clear(ptr as usize, 20, 12);
         unsafe {
             assert_eq!(*ptr, 0);
         }
