@@ -228,4 +228,26 @@ mod tests {
 
         let _byte = unsafe { Box::from_raw(ptr) };
     }
+
+    #[test]
+    fn set_and_clear_more_than_a_byte() -> () {
+        let byte: Box<u32> = Box::new(0);
+        let ptr = Box::into_raw(byte);
+
+        set(ptr as usize, 0, 10);
+        set(ptr as usize, 10, 10);
+        set(ptr as usize, 20, 12);
+        unsafe {
+            assert_eq!(*ptr, !0);
+        }
+
+        clear(ptr as usize, 0, 10);
+        clear(ptr as usize, 10, 10);
+        clear(ptr as usize, 20, 12);
+        unsafe {
+            assert_eq!(*ptr, 0);
+        }
+
+        let _byte = unsafe { Box::from_raw(ptr) };
+    }
 }
