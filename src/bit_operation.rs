@@ -1,3 +1,8 @@
+enum Operation {
+    Set,
+    Clear,
+}
+
 pub fn within_a_byte(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     unsafe {
         *((address + start_bit / 8) as *mut u8) |=
