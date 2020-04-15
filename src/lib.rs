@@ -98,57 +98,57 @@ mod tests {
         }
 
         #[test]
-        fn set_within_a_byte_1() -> () {
+        fn within_a_byte_1() -> () {
             test_set(3, 2, 0b11000);
         }
 
         #[test]
-        fn set_within_a_byte_2() -> () {
+        fn within_a_byte_2() -> () {
             test_set(1, 4, 0b11110);
         }
 
         #[test]
-        fn set_all_bits_of_a_byte_1() -> () {
+        fn all_bits_of_a_byte_1() -> () {
             test_set(0, 8, 0b11111111);
         }
 
         #[test]
-        fn set_all_bits_of_a_byte_2() -> () {
+        fn all_bits_of_a_byte_2() -> () {
             test_set(8, 8, 0xff00);
         }
 
         #[test]
-        fn set_no_bits_1() -> () {
+        fn no_bits_1() -> () {
             test_set(0, 0, 0);
         }
 
         #[test]
-        fn set_more_than_a_byte_1() -> () {
+        fn more_than_a_byte_1() -> () {
             test_set(3, 10, 0b1111111111000);
         }
 
         #[test]
-        fn set_more_than_a_byte_2() -> () {
+        fn more_than_a_byte_2() -> () {
             test_set(6, 13, 0b1111111111111000000);
         }
 
         #[test]
-        fn set_all_bits_of_u32() -> () {
+        fn all_bits_of_u32() -> () {
             test_set(0, 32, 0xFFFFFFFF);
         }
 
         #[test]
-        fn set_no_bits_2() -> () {
+        fn no_bits_2() -> () {
             test_set(8, 0, 0);
         }
 
         #[test]
-        fn set_start_bit_more_than_7_1() -> () {
+        fn start_bit_more_than_7_1() -> () {
             test_set(10, 3, 0b11100_00000000);
         }
 
         #[test]
-        fn set_start_bit_more_than_7_2() -> () {
+        fn start_bit_more_than_7_2() -> () {
             test_set(26, 5, 0b01111100_00000000_00000000_00000000);
         }
     }
