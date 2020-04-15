@@ -187,6 +187,11 @@ mod tests {
         }
 
         #[test]
+        fn all_bits_of_u32() -> () {
+            test(0, 32, 0);
+        }
+
+        #[test]
         fn start_bit_more_than_7_1() -> () {
             test(10, 3, 0b11111111_11111111_11100011_11111111);
         }
