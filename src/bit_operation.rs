@@ -45,10 +45,7 @@ fn within_a_byte<T>(bit_string: bit_string::BitString, edit_bit: T) -> ()
 where
     T: EditBitFunc,
 {
-    let dest: *mut u8 = (bit_string.start_address + bit_string.start_bit / 8) as *mut u8;
-    let bit_mask: u8 = ((1 << (bit_string.start_bit % 8 + bit_string.num_of_bits)) as u16
-        - (1 << (bit_string.start_bit % 8)) as u16) as u8;
-    edit_bit(dest, bit_mask);
+    set_head_byte(&bit_string, &edit_bit);
 }
 
 fn set_head_byte<T>(bit_string: &bit_string::BitString, edit_bit: &T) -> ()
@@ -56,8 +53,13 @@ where
     T: EditBitFunc,
 {
     let dest: *mut u8 = (bit_string.start_address + bit_string.start_bit / 8) as *mut u8;
-    let bit_mask: u8 = ((1 << 8) as u16 - (1 << (bit_string.start_bit % 8)) as u16) as u8;
-
+    let bit_mask: u8 = ((1
+        << if bit_string.does_straddle_byte_boundary() {
+            8
+        } else {
+            bit_string.start_bit % 8 + bit_string.num_of_bits
+        }) as u16
+        - (1 << (bit_string.start_bit % 8)) as u16) as u8;
     edit_bit(dest, bit_mask);
 }
 
@@ -134,7 +136,7 @@ mod tests {
             set_head_byte(bit_string, &set_bit);
         };
 
-        test_general(start_bit, 0, correct_value, func);
+        test_general(start_bit, 8, correct_value, func);
     }
 
     fn test_tail(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
