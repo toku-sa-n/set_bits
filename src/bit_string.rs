@@ -116,6 +116,11 @@ mod tests {
             fn common_1() -> () {
                 common(3, 20, 0, 0b11111000);
             }
+
+            #[test]
+            fn common_2() -> () {
+                common(5, 9, 0, 0b11100000);
+            }
         }
     }
 }
