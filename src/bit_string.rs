@@ -57,4 +57,9 @@ mod tests {
     fn bits_at_byte_set_all_bits_within_a_byte() -> () {
         bits_at_byte_within_a_byte(0, 8, 0xFF);
     }
+
+    #[test]
+    fn bits_at_byte_set_no_bits_within_a_byte() -> () {
+        bits_at_byte_within_a_byte(0, 0, 0);
+    }
 }
