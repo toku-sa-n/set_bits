@@ -69,6 +69,11 @@ mod tests {
             fn set_no_bits() -> () {
                 common(0, 0, 0, 0);
             }
+
+            #[test]
+            fn idx_out_of_range() -> () {
+                common(0, 8, 0, 0);
+            }
         }
     }
 }
