@@ -18,7 +18,7 @@ impl BitString {
     }
 
     pub fn does_straddle_byte_boundary(&self) -> bool {
-        self.start_bit / 8 != (self.start_bit + self.num_of_bits - 1) / 8
+        self.num_of_bits != 0 && self.start_bit / 8 != (self.start_bit + self.num_of_bits - 1) / 8
     }
 
     fn first_byte_index(&self) -> usize {
