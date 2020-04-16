@@ -66,8 +66,8 @@ impl BitString {
             self.get_head_byte()
         } else if idx == self.tail_byte_index() {
             self.get_tail_byte()
-        } else if self.does_straddle_byte_boundary() {
-            self.more_than_a_byte(idx)
+        } else if idx > self.head_byte_index() && idx < self.tail_byte_index() {
+            0xFF
         } else {
             self.within_a_byte(idx)
         }
