@@ -22,7 +22,8 @@ impl BitString {
     }
 
     fn bits_at_byte(&self, idx: usize) -> u8 {
-        0b00011000
+        ((1 << (self.start_bit % 8 + self.num_of_bits)) as u16 - (1 << (self.start_bit % 8)) as u16)
+            as u8
     }
 }
 
