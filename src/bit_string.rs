@@ -39,20 +39,20 @@ mod tests {
     mod bits_at_byte {
         use super::*;
 
+        fn common(start_bit: usize, num_of_bits: usize, idx: usize, correct_value: u8) -> () {
+            let heap: Box<u32> = Box::new(0);
+            let ptr = Box::into_raw(heap);
+
+            let bit_string = BitString::new(ptr as usize, start_bit, num_of_bits);
+            assert_eq!(bit_string.bits_at_byte(idx), correct_value);
+
+            unsafe {
+                let _heap: Box<u32> = Box::from_raw(ptr);
+            }
+        }
+
         mod within_a_byte {
             use super::*;
-
-            fn common(start_bit: usize, num_of_bits: usize, idx: usize, correct_value: u8) -> () {
-                let heap: Box<u32> = Box::new(0);
-                let ptr = Box::into_raw(heap);
-
-                let bit_string = BitString::new(ptr as usize, start_bit, num_of_bits);
-                assert_eq!(bit_string.bits_at_byte(idx), correct_value);
-
-                unsafe {
-                    let _heap: Box<u32> = Box::from_raw(ptr);
-                }
-            }
 
             #[test]
             fn common_1() -> () {
