@@ -29,19 +29,6 @@ impl BitString {
         (self.start_bit + self.num_of_bits - 1) / 8
     }
 
-    fn within_a_byte(&self, idx: usize) -> u8 {
-        if self.num_of_bits == 0 || idx < self.head_byte_index() || idx > self.tail_byte_index() {
-            0
-        } else {
-            ((1 << (self.start_bit % 8 + self.num_of_bits)) as u16
-                - (1 << (self.start_bit % 8)) as u16) as u8
-        }
-    }
-
-    fn more_than_a_byte(&self, idx: usize) -> u8 {
-        0b11111000
-    }
-
     fn get_head_byte(&self) -> u8 {
         ((1 << if self.does_straddle_byte_boundary() {
             8
