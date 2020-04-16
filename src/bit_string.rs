@@ -30,13 +30,12 @@ impl BitString {
 mod tests {
     use super::*;
 
-    #[test]
-    fn bits_at_byte_within_a_byte_1() -> () {
+    fn bits_at_byte_within_a_byte(start_bit: usize, num_of_bits: usize, correct_value: u8) -> () {
         let heap: Box<u32> = Box::new(0);
-        let ptr: *mut u32 = Box::into_raw(heap);
+        let ptr = Box::into_raw(heap);
 
-        let bit_string: BitString = BitString::new(ptr as usize, 3, 2);
-        assert_eq!(bit_string.bits_at_byte(0), 0b00011000);
+        let bit_string = BitString::new(ptr as usize, start_bit, num_of_bits);
+        assert_eq!(bit_string.bits_at_byte(0), correct_value);
 
         unsafe {
             let _heap: Box<u32> = Box::from_raw(ptr);
@@ -44,15 +43,12 @@ mod tests {
     }
 
     #[test]
+    fn bits_at_byte_within_a_byte_1() -> () {
+        bits_at_byte_within_a_byte(3, 2, 0b00011000);
+    }
+
+    #[test]
     fn bits_at_byte_within_a_byte_2() -> () {
-        let heap: Box<u32> = Box::new(0);
-        let ptr: *mut u32 = Box::into_raw(heap);
-
-        let bit_string: BitString = BitString::new(ptr as usize, 1, 4);
-        assert_eq!(bit_string.bits_at_byte(0), 0b00011110);
-
-        unsafe {
-            let _heap: Box<u32> = Box::from_raw(ptr);
-        }
+        bits_at_byte_within_a_byte(1, 4, 0b00011110);
     }
 }
