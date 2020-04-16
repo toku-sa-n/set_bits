@@ -79,5 +79,7 @@ mod tests {
                 common(0, 8, 1, 0);
             }
         }
+
+        mod more_than_a_byte {}
     }
 }
