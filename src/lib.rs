@@ -27,9 +27,7 @@ mod bit_string;
 /// ```
 pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     bit_operation::bit_operation(
-        address,
-        start_bit,
-        num_of_bits,
+        bit_string::BitString::new(address, start_bit, num_of_bits),
         bit_operation::Operation::Set,
     );
 }
@@ -56,9 +54,7 @@ pub fn set(address: usize, start_bit: usize, num_of_bits: usize) -> () {
 /// ```
 pub fn clear(address: usize, start_bit: usize, num_of_bits: usize) -> () {
     bit_operation::bit_operation(
-        address,
-        start_bit,
-        num_of_bits,
+        bit_string::BitString::new(address, start_bit, num_of_bits),
         bit_operation::Operation::Clear,
     );
 }
