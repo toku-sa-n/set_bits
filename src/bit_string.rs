@@ -52,4 +52,9 @@ mod tests {
     fn bits_at_byte_within_a_byte_2() -> () {
         bits_at_byte_within_a_byte(1, 4, 0b00011110);
     }
+
+    #[test]
+    fn bits_at_byte_set_all_bits_within_a_byte() -> () {
+        bits_at_byte_within_a_byte(0, 8, 0xFF);
+    }
 }
