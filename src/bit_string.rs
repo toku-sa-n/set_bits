@@ -51,9 +51,21 @@ impl BitString {
             - (1 << (self.start_bit % 8)) as u16) as u8
     }
 
+    fn get_tail_byte(&self) -> u8 {
+        let bits_in_byte: u8 = (1 << (self.start_bit + self.num_of_bits) % 8) - 1;
+
+        if bits_in_byte == 0 {
+            0xFF
+        } else {
+            bits_in_byte
+        }
+    }
+
     fn bits_at_byte(&self, idx: usize) -> u8 {
         if idx == self.head_byte_index() {
             self.get_head_byte()
+        } else if idx == self.tail_byte_index() {
+            self.get_tail_byte()
         } else if self.does_straddle_byte_boundary() {
             self.more_than_a_byte(idx)
         } else {
@@ -131,6 +143,11 @@ mod tests {
             #[test]
             fn head_byte_2() -> () {
                 common(5, 9, 0, 0b11100000);
+            }
+
+            #[test]
+            fn tail_byte_1() -> () {
+                common(3, 20, 2, 0b01111111);
             }
         }
     }
