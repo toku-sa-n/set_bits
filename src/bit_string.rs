@@ -69,7 +69,7 @@ impl BitString {
         } else if idx > self.head_byte_index() && idx < self.tail_byte_index() {
             0xFF
         } else {
-            self.within_a_byte(idx)
+            0
         }
     }
 }
@@ -174,6 +174,11 @@ mod tests {
             fn body_byte_2() -> () {
                 common(0, 32, 1, 0xFF);
                 common(0, 32, 2, 0xFF);
+            }
+
+            #[test]
+            fn index_below_range() -> () {
+                common(8, 16, 0, 0);
             }
         }
     }
