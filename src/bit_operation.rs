@@ -34,10 +34,7 @@ where
         return;
     }
 
-    let bit_string_straddles_byte_boundaries: bool =
-        bit_string.start_bit / 8 != (bit_string.start_bit + bit_string.num_of_bits - 1) / 8;
-
-    if bit_string_straddles_byte_boundaries {
+    if bit_string.does_straddle_byte_boundary() {
         straddling_byte_boundaries(bit_string, edit_bit);
     } else {
         within_a_byte(bit_string, edit_bit);
