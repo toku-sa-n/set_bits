@@ -169,6 +169,12 @@ mod tests {
             fn body_byte_1() -> () {
                 common(3, 20, 1, 0xFF);
             }
+
+            #[test]
+            fn body_byte_2() -> () {
+                common(0, 32, 1, 0xFF);
+                common(0, 32, 2, 0xFF);
+            }
         }
     }
 }
