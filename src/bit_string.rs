@@ -21,6 +21,10 @@ impl BitString {
         self.start_bit / 8 != (self.start_bit + self.num_of_bits - 1) / 8
     }
 
+    fn last_byte_index(&self) -> usize {
+        (self.start_bit + self.num_of_bits - 1) / 8
+    }
+
     fn bits_at_byte(&self, idx: usize) -> u8 {
         if idx > 0 {
             0
