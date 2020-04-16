@@ -21,3 +21,21 @@ impl BitString {
         self.start_bit / 8 != (self.start_bit + self.num_of_bits - 1) / 8
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn bits_at_byte_within_a_byte_1() -> () {
+        let heap: Box<u32> = Box::new(0);
+        let ptr: *mut u32 = Box::into_raw(heap);
+
+        let bit_string: BitString = BitString::new(ptr as usize, 3, 2);
+        assert_eq!(bit_string.bits_at_byte(0), 0b00011000);
+
+        unsafe {
+            let _heap: Box<u32> = Box::from_raw(ptr);
+        }
+    }
+}
