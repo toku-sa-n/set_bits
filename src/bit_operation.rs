@@ -30,7 +30,7 @@ fn edit_bit<T>(bit_string: bit_string::BitString, edit_bit: T) -> ()
 where
     T: EditBitFunc,
 {
-    if bit_string.num_of_bits == 0 {
+    if bit_string.len_in_bit() == 0 {
         return;
     }
 
