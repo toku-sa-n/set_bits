@@ -42,4 +42,17 @@ mod tests {
             let _heap: Box<u32> = Box::from_raw(ptr);
         }
     }
+
+    #[test]
+    fn bits_at_byte_within_a_byte_2() -> () {
+        let heap: Box<u32> = Box::new(0);
+        let ptr: *mut u32 = Box::into_raw(heap);
+
+        let bit_string: BitString = BitString::new(ptr as usize, 1, 4);
+        assert_eq!(bit_string.bits_at_byte(0), 0b00011110);
+
+        unsafe {
+            let _heap: Box<u32> = Box::from_raw(ptr);
+        }
+    }
 }
