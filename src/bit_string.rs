@@ -124,12 +124,12 @@ mod tests {
             use super::*;
 
             #[test]
-            fn common_1() -> () {
+            fn head_byte_1() -> () {
                 common(3, 20, 0, 0b11111000);
             }
 
             #[test]
-            fn common_2() -> () {
+            fn head_byte_2() -> () {
                 common(5, 9, 0, 0b11100000);
             }
         }
