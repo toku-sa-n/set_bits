@@ -97,7 +97,13 @@ mod tests {
                 common(8, 8, 0, 0);
             }
         }
+        mod more_than_a_byte {
+            use super::*;
 
-        mod more_than_a_byte {}
+            #[test]
+            fn common_1() -> () {
+                common(3, 20, 0, 0b11111000);
+            }
+        }
     }
 }
