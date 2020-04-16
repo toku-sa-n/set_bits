@@ -84,7 +84,7 @@ mod tests {
             }
 
             #[test]
-            fn idx_out_of_range() -> () {
+            fn index_over_range() -> () {
                 common(0, 8, 1, 0);
             }
         }
