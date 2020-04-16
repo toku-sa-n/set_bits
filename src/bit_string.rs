@@ -18,19 +18,19 @@ impl BitString {
     }
 
     pub fn does_straddle_byte_boundary(&self) -> bool {
-        self.len_in_bit() != 0 && self.head_byte_index() != self.last_byte_index()
+        self.len_in_bit() != 0 && self.head_byte_index() != self.tail_byte_index()
     }
 
     fn head_byte_index(&self) -> usize {
         self.start_bit / 8
     }
 
-    fn last_byte_index(&self) -> usize {
+    fn tail_byte_index(&self) -> usize {
         (self.start_bit + self.num_of_bits - 1) / 8
     }
 
     fn within_a_byte(&self, idx: usize) -> u8 {
-        if self.num_of_bits == 0 || idx < self.head_byte_index() || idx > self.last_byte_index() {
+        if self.num_of_bits == 0 || idx < self.head_byte_index() || idx > self.tail_byte_index() {
             0
         } else {
             ((1 << (self.start_bit % 8 + self.num_of_bits)) as u16
