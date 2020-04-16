@@ -146,6 +146,11 @@ mod tests {
             }
 
             #[test]
+            fn head_all_bits() -> () {
+                common(0, 32, 0, 0xFF);
+            }
+
+            #[test]
             fn tail_byte_1() -> () {
                 common(3, 20, 2, 0b01111111);
             }
