@@ -87,6 +87,11 @@ mod tests {
             fn index_over_range() -> () {
                 common(0, 8, 1, 0);
             }
+
+            #[test]
+            fn index_below_range() -> () {
+                common(8, 8, 0, 0);
+            }
         }
 
         mod more_than_a_byte {}
