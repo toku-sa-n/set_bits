@@ -31,35 +31,40 @@ impl BitString {
 mod tests {
     use super::*;
 
-    fn bits_at_byte_within_a_byte(start_bit: usize, num_of_bits: usize, correct_value: u8) -> () {
-        let heap: Box<u32> = Box::new(0);
-        let ptr = Box::into_raw(heap);
+    #[cfg(test)]
+    mod bits_at_byte {
+        use super::*;
 
-        let bit_string = BitString::new(ptr as usize, start_bit, num_of_bits);
-        assert_eq!(bit_string.bits_at_byte(0), correct_value);
+        fn within_a_byte(start_bit: usize, num_of_bits: usize, correct_value: u8) -> () {
+            let heap: Box<u32> = Box::new(0);
+            let ptr = Box::into_raw(heap);
 
-        unsafe {
-            let _heap: Box<u32> = Box::from_raw(ptr);
+            let bit_string = BitString::new(ptr as usize, start_bit, num_of_bits);
+            assert_eq!(bit_string.bits_at_byte(0), correct_value);
+
+            unsafe {
+                let _heap: Box<u32> = Box::from_raw(ptr);
+            }
         }
-    }
 
-    #[test]
-    fn bits_at_byte_within_a_byte_1() -> () {
-        bits_at_byte_within_a_byte(3, 2, 0b00011000);
-    }
+        #[test]
+        fn within_a_byte_1() -> () {
+            within_a_byte(3, 2, 0b00011000);
+        }
 
-    #[test]
-    fn bits_at_byte_within_a_byte_2() -> () {
-        bits_at_byte_within_a_byte(1, 4, 0b00011110);
-    }
+        #[test]
+        fn within_a_byte_2() -> () {
+            within_a_byte(1, 4, 0b00011110);
+        }
 
-    #[test]
-    fn bits_at_byte_set_all_bits_within_a_byte() -> () {
-        bits_at_byte_within_a_byte(0, 8, 0xFF);
-    }
+        #[test]
+        fn set_all_bits_within_a_byte() -> () {
+            within_a_byte(0, 8, 0xFF);
+        }
 
-    #[test]
-    fn bits_at_byte_set_no_bits_within_a_byte() -> () {
-        bits_at_byte_within_a_byte(0, 0, 0);
+        #[test]
+        fn set_no_bits_within_a_byte() -> () {
+            within_a_byte(0, 0, 0);
+        }
     }
 }
