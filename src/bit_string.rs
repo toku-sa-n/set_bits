@@ -42,8 +42,19 @@ impl BitString {
         0b11111000
     }
 
+    fn get_head_byte(&self) -> u8 {
+        ((1 << if self.does_straddle_byte_boundary() {
+            8
+        } else {
+            self.start_bit % 8 + self.num_of_bits
+        }) as u16
+            - (1 << (self.start_bit % 8)) as u16) as u8
+    }
+
     fn bits_at_byte(&self, idx: usize) -> u8 {
-        if self.does_straddle_byte_boundary() {
+        if idx == self.head_byte_index() {
+            self.get_head_byte()
+        } else if self.does_straddle_byte_boundary() {
             self.more_than_a_byte(idx)
         } else {
             self.within_a_byte(idx)
