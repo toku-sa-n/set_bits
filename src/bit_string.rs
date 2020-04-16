@@ -22,8 +22,12 @@ impl BitString {
     }
 
     fn bits_at_byte(&self, idx: usize) -> u8 {
-        ((1 << (self.start_bit % 8 + self.num_of_bits)) as u16 - (1 << (self.start_bit % 8)) as u16)
-            as u8
+        if idx > 0 {
+            0
+        } else {
+            ((1 << (self.start_bit % 8 + self.num_of_bits)) as u16
+                - (1 << (self.start_bit % 8)) as u16) as u8
+        }
     }
 }
 
@@ -72,7 +76,7 @@ mod tests {
 
             #[test]
             fn idx_out_of_range() -> () {
-                common(0, 8, 0, 0);
+                common(0, 8, 1, 0);
             }
         }
     }
