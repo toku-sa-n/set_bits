@@ -30,7 +30,7 @@ impl BitString {
     }
 
     fn bits_at_byte(&self, idx: usize) -> u8 {
-        if self.num_of_bits == 0 || idx > self.last_byte_index() {
+        if self.num_of_bits == 0 || idx < self.first_byte_index() || idx > self.last_byte_index() {
             0
         } else {
             ((1 << (self.start_bit % 8 + self.num_of_bits)) as u16
