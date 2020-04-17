@@ -30,14 +30,11 @@ fn edit_bit<T>(bit_string: bit_string::BitString, edit_bit: T) -> ()
 where
     T: EditBitFunc,
 {
-    if bit_string.len_in_bit() == 0 {
-        return;
-    }
-
-    if bit_string.does_straddle_byte_boundary() {
-        straddling_byte_boundaries(bit_string, edit_bit);
-    } else {
-        within_a_byte(bit_string, edit_bit);
+    for i in 0..bit_string.len_in_byte() {
+        edit_bit(
+            bit_string.get_address_of_byte(i) as *mut u8,
+            bit_string.bits_at_byte(i),
+        );
     }
 }
 
