@@ -8,7 +8,7 @@ Add `set_bits` to your `Cargo.toml` file.
 
 ```toml
 [dependencies]
-set_bits = "1.0.1"
+set_bits = "1.0.2"
 ```
 
 ```rust
