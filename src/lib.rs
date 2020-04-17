@@ -1,4 +1,5 @@
 #![feature(trait_alias)]
+#![no_std]
 
 mod bit_operation;
 mod bit_string;

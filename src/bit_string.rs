@@ -79,7 +79,9 @@ mod tests {
 
     #[cfg(test)]
     mod bits_at_byte {
+        extern crate std;
         use super::*;
+        use std::boxed::Box;
 
         fn common(start_bit: usize, num_of_bits: usize, idx: usize, correct_value: u8) -> () {
             let heap: Box<u32> = Box::new(0);
