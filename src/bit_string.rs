@@ -17,6 +17,10 @@ impl BitString {
         self.num_of_bits
     }
 
+    fn len_in_byte(&self) -> usize {
+        (self.start_bit + self.num_of_bits - 1) / 8 + 1
+    }
+
     pub fn does_straddle_byte_boundary(&self) -> bool {
         self.len_in_bit() != 0 && self.head_byte_index() != self.tail_byte_index()
     }
