@@ -6,11 +6,6 @@ set\_bits is a Rust library for setting and clearing bits on memory.
 
 Add `set_bits` to your `Cargo.toml` file.
 
-```toml
-[dependencies]
-set_bits = "1.0.2"
-```
-
 ```rust
 use set_bits;
 
