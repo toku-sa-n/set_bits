@@ -2,15 +2,14 @@
 
 set\_bits is a Rust library for setting and clearing bits on memory.
 
-## Installation
-
-Use `cargo` to install set\_bits:
-
-```bash
-cargo install set_bits
-```
-
 ## Usage
+
+Add `set_bits` to your `Cargo.toml` file.
+
+```toml
+[dependencies]
+set_bits = "1.0.1"
+```
 
 ```rust
 use set_bits;
