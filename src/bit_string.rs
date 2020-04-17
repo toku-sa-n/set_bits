@@ -17,8 +17,12 @@ impl BitString {
         self.num_of_bits
     }
 
-    fn len_in_byte(&self) -> usize {
-        (self.start_bit + self.num_of_bits - 1) / 8 + 1
+    pub fn len_in_byte(&self) -> usize {
+        if self.num_of_bits == 0 {
+            0
+        } else {
+            (self.start_bit + self.num_of_bits - 1) / 8 + 1
+        }
     }
 
     pub fn does_straddle_byte_boundary(&self) -> bool {
@@ -52,7 +56,7 @@ impl BitString {
         }
     }
 
-    fn bits_at_byte(&self, idx: usize) -> u8 {
+    pub fn bits_at_byte(&self, idx: usize) -> u8 {
         if idx == self.head_byte_index() {
             self.get_head_byte()
         } else if idx == self.tail_byte_index() {
@@ -62,6 +66,10 @@ impl BitString {
         } else {
             0
         }
+    }
+
+    pub fn get_address_of_byte(&self, idx: usize) -> usize {
+        self.start_address + idx
     }
 }
 
