@@ -9,7 +9,7 @@ documentation = "https://docs.rs/set_bits"
 readme = "README.md"
 repository = "https://github.com/toku-sa-n/set_bits"
 keywords = ["bit","os","memory"]
-categories = ["operating-systems"]
+categories = ["os"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
