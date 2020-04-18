@@ -189,7 +189,7 @@ mod tests {
 
             #[test]
             fn body_section_1() -> () {
-                common(3, 20, 1, 0xFF);
+                common(3, 256, 1, !0);
             }
 
             #[test]
