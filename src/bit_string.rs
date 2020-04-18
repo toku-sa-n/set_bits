@@ -118,7 +118,7 @@ mod tests {
 
             #[test]
             fn set_all_bits() -> () {
-                common(0, 8, 0, 0xFF);
+                common(0, NUM_OF_BITS, 0, !0);
             }
 
             #[test]
