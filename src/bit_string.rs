@@ -61,6 +61,19 @@ impl BitString {
     }
 
     pub fn bits_at_byte(&self, idx: usize) -> SrcVal {
+        // sec: abbr of section
+        // 00000000__00011111__11111111__11111111__11000000
+        // ^         ^^^^^^^^  ^^^^^^^^^^^^^^^^^   ^^^^^^^^
+        //  start     head           body           tail
+        //  bit       sec            sec            sec
+        //
+        //  If bit string fits in a section , there's no body and tail sections.
+        //  Only head section exists.
+        //
+        //  00000000__00111000__00000000
+        //            ^^^^^^^^
+        //              head
+        //              sec
         if idx == self.head_byte_index() {
             self.get_head_byte()
         } else if idx == self.tail_byte_index() {
