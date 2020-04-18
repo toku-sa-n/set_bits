@@ -38,12 +38,13 @@ impl BitString {
     }
 
     fn get_head_byte(&self) -> u8 {
+        // Without explicit type conversion to u8, this code panics if bit string
+        // straddles byte boundary.
         ((1 << if self.does_straddle_byte_boundary() {
             8
         } else {
             self.start_bit % 8 + self.num_of_bits
-        }) as u16
-            - (1 << (self.start_bit % 8)) as u16) as u8
+        }) - (1 << (self.start_bit % 8))) as u8
     }
 
     fn get_tail_byte(&self) -> u8 {
