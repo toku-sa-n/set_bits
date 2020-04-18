@@ -5,9 +5,9 @@ pub enum Operation {
     Clear,
 }
 
-type DestPtr = *mut u8;
-pub type SrcVal = u8;
-pub const NUM_OF_BITS: usize = 8;
+type DestPtr = *mut u128;
+pub type SrcVal = u128;
+pub const NUM_OF_BITS: usize = 128;
 
 pub trait EditBitFunc = Fn(DestPtr, SrcVal) -> ();
 
