@@ -200,7 +200,7 @@ mod tests {
 
             #[test]
             fn index_below_range() -> () {
-                common(8, 16, 0, 0);
+                common(128, 256, 0, 0);
             }
         }
     }
