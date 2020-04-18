@@ -179,7 +179,7 @@ mod tests {
 
             #[test]
             fn tail_section_2() -> () {
-                common(5, 9, 1, 0b00111111);
+                common(5, 128, 1, 0b11111);
             }
 
             #[test]
