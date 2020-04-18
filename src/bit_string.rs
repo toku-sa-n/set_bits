@@ -184,7 +184,7 @@ mod tests {
 
             #[test]
             fn tail_all_bits() -> () {
-                common(0, 32, 3, 0xFF);
+                common(0, NUM_OF_BITS * 4, 3, !0);
             }
 
             #[test]
