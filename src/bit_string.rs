@@ -194,8 +194,8 @@ mod tests {
 
             #[test]
             fn body_section_2() -> () {
-                common(0, 32, 1, 0xFF);
-                common(0, 32, 2, 0xFF);
+                common(0, NUM_OF_BITS * 4, 1, !0);
+                common(0, NUM_OF_BITS * 4, 2, !0);
             }
 
             #[test]
