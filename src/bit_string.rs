@@ -140,8 +140,8 @@ mod tests {
             }
 
             #[test]
-            fn start_bit_more_than_7() -> () {
-                common(11, 2, 1, 0b00011000);
+            fn start_bit_more_than_127() -> () {
+                common(131, 2, 1, 0b00011000);
             }
 
             #[test]
