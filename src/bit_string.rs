@@ -159,7 +159,7 @@ mod tests {
 
             #[test]
             fn head_section_1() -> () {
-                common(3, 20, 0, 0b11111000);
+                common(3, 128, 0, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8);
             }
 
             #[test]
