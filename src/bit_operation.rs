@@ -34,9 +34,9 @@ fn edit_bit<T>(bit_string: bit_string::BitString, edit_bit: T) -> ()
 where
     T: EditBitFunc,
 {
-    for i in 0..bit_string.len_in_byte() {
+    for i in 0..bit_string.len_in_section() {
         edit_bit(
-            bit_string.get_address_of_byte(i) as DestPtr,
+            bit_string.get_address_of_section(i) as DestPtr,
             bit_string.bits_at_section(i),
         );
     }

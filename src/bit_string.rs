@@ -20,7 +20,7 @@ impl BitString {
         self.num_of_bits
     }
 
-    pub fn len_in_byte(&self) -> usize {
+    pub fn len_in_section(&self) -> usize {
         if self.num_of_bits == 0 {
             0
         } else {
@@ -28,20 +28,20 @@ impl BitString {
         }
     }
 
-    fn does_straddle_byte_boundary(&self) -> bool {
-        self.len_in_bit() != 0 && self.head_byte_index() != self.tail_byte_index()
+    fn does_straddle_section_boundary(&self) -> bool {
+        self.len_in_bit() != 0 && self.head_section_index() != self.tail_section_index()
     }
 
-    fn head_byte_index(&self) -> usize {
+    fn head_section_index(&self) -> usize {
         self.start_bit / NUM_OF_BITS
     }
 
-    fn tail_byte_index(&self) -> usize {
+    fn tail_section_index(&self) -> usize {
         (self.start_bit + self.num_of_bits - 1) / NUM_OF_BITS
     }
 
-    fn get_head_byte(&self) -> SrcVal {
-        (if self.does_straddle_byte_boundary()
+    fn get_head_section(&self) -> SrcVal {
+        (if self.does_straddle_section_boundary()
             || self.start_bit % NUM_OF_BITS + self.num_of_bits == NUM_OF_BITS
         {
             !0
@@ -50,13 +50,13 @@ impl BitString {
         }) - ((1 << (self.start_bit % NUM_OF_BITS)) - 1)
     }
 
-    fn get_tail_byte(&self) -> SrcVal {
-        let bits_in_byte: SrcVal = (1 << (self.start_bit + self.num_of_bits) % NUM_OF_BITS) - 1;
+    fn get_tail_section(&self) -> SrcVal {
+        let bits_in_section: SrcVal = (1 << (self.start_bit + self.num_of_bits) % NUM_OF_BITS) - 1;
 
-        if bits_in_byte == 0 {
+        if bits_in_section == 0 {
             !0
         } else {
-            bits_in_byte
+            bits_in_section
         }
     }
 
@@ -74,18 +74,18 @@ impl BitString {
         //            ^^^^^^^^
         //              head
         //              sec
-        if idx == self.head_byte_index() {
-            self.get_head_byte()
-        } else if idx == self.tail_byte_index() {
-            self.get_tail_byte()
-        } else if idx > self.head_byte_index() && idx < self.tail_byte_index() {
+        if idx == self.head_section_index() {
+            self.get_head_section()
+        } else if idx == self.tail_section_index() {
+            self.get_tail_section()
+        } else if idx > self.head_section_index() && idx < self.tail_section_index() {
             !0
         } else {
             0
         }
     }
 
-    pub fn get_address_of_byte(&self, idx: usize) -> usize {
+    pub fn get_address_of_section(&self, idx: usize) -> usize {
         self.start_address + idx
     }
 }
@@ -158,12 +158,12 @@ mod tests {
             use super::*;
 
             #[test]
-            fn head_byte_1() -> () {
+            fn head_section_1() -> () {
                 common(3, 20, 0, 0b11111000);
             }
 
             #[test]
-            fn head_byte_2() -> () {
+            fn head_section_2() -> () {
                 common(5, 9, 0, 0b11100000);
             }
 
@@ -173,12 +173,12 @@ mod tests {
             }
 
             #[test]
-            fn tail_byte_1() -> () {
+            fn tail_section_1() -> () {
                 common(3, 20, 2, 0b01111111);
             }
 
             #[test]
-            fn tail_byte_2() -> () {
+            fn tail_section_2() -> () {
                 common(5, 9, 1, 0b00111111);
             }
 
@@ -188,12 +188,12 @@ mod tests {
             }
 
             #[test]
-            fn body_byte_1() -> () {
+            fn body_section_1() -> () {
                 common(3, 20, 1, 0xFF);
             }
 
             #[test]
-            fn body_byte_2() -> () {
+            fn body_section_2() -> () {
                 common(0, 32, 1, 0xFF);
                 common(0, 32, 2, 0xFF);
             }
