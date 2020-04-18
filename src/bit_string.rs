@@ -4,6 +4,9 @@ pub struct BitString {
     pub num_of_bits: usize,
 }
 
+use crate::bit_operation::SrcVal;
+use crate::bit_operation::NUM_OF_BITS;
+
 impl BitString {
     pub fn new(start_address: usize, start_bit: usize, num_of_bits: usize) -> Self {
         Self {
@@ -21,7 +24,7 @@ impl BitString {
         if self.num_of_bits == 0 {
             0
         } else {
-            (self.start_bit + self.num_of_bits - 1) / 8 + 1
+            (self.start_bit + self.num_of_bits - 1) / NUM_OF_BITS + 1
         }
     }
 
@@ -30,40 +33,40 @@ impl BitString {
     }
 
     fn head_byte_index(&self) -> usize {
-        self.start_bit / 8
+        self.start_bit / NUM_OF_BITS
     }
 
     fn tail_byte_index(&self) -> usize {
-        (self.start_bit + self.num_of_bits - 1) / 8
+        (self.start_bit + self.num_of_bits - 1) / NUM_OF_BITS
     }
 
-    fn get_head_byte(&self) -> u8 {
+    fn get_head_byte(&self) -> SrcVal {
         // Without explicit type conversion to u8, this code panics if bit string
         // straddles byte boundary.
         ((1 << if self.does_straddle_byte_boundary() {
-            8
+            NUM_OF_BITS
         } else {
-            self.start_bit % 8 + self.num_of_bits
-        }) - (1 << (self.start_bit % 8))) as u8
+            self.start_bit % NUM_OF_BITS + self.num_of_bits
+        }) - (1 << (self.start_bit % NUM_OF_BITS))) as SrcVal
     }
 
-    fn get_tail_byte(&self) -> u8 {
-        let bits_in_byte: u8 = (1 << (self.start_bit + self.num_of_bits) % 8) - 1;
+    fn get_tail_byte(&self) -> SrcVal {
+        let bits_in_byte: SrcVal = (1 << (self.start_bit + self.num_of_bits) % NUM_OF_BITS) - 1;
 
         if bits_in_byte == 0 {
-            0xFF
+            !0
         } else {
             bits_in_byte
         }
     }
 
-    pub fn bits_at_byte(&self, idx: usize) -> u8 {
+    pub fn bits_at_byte(&self, idx: usize) -> SrcVal {
         if idx == self.head_byte_index() {
             self.get_head_byte()
         } else if idx == self.tail_byte_index() {
             self.get_tail_byte()
         } else if idx > self.head_byte_index() && idx < self.tail_byte_index() {
-            0xFF
+            !0
         } else {
             0
         }
@@ -84,7 +87,7 @@ mod tests {
         use super::*;
         use std::boxed::Box;
 
-        fn common(start_bit: usize, num_of_bits: usize, idx: usize, correct_value: u8) -> () {
+        fn common(start_bit: usize, num_of_bits: usize, idx: usize, correct_value: SrcVal) -> () {
             let heap: Box<u32> = Box::new(0);
             let ptr = Box::into_raw(heap);
 
