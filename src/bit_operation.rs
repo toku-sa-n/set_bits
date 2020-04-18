@@ -37,7 +37,7 @@ where
     for i in 0..bit_string.len_in_byte() {
         edit_bit(
             bit_string.get_address_of_byte(i) as DestPtr,
-            bit_string.bits_at_byte(i),
+            bit_string.bits_at_section(i),
         );
     }
 }

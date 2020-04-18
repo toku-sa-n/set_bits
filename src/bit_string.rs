@@ -60,7 +60,7 @@ impl BitString {
         }
     }
 
-    pub fn bits_at_byte(&self, idx: usize) -> SrcVal {
+    pub fn bits_at_section(&self, idx: usize) -> SrcVal {
         // sec: abbr of section
         // 00000000__00011111__11111111__11111111__11000000
         // ^         ^^^^^^^^  ^^^^^^^^^^^^^^^^^   ^^^^^^^^
@@ -95,7 +95,7 @@ mod tests {
     use super::*;
 
     #[cfg(test)]
-    mod bits_at_byte {
+    mod bits_at_section {
         extern crate std;
         use super::*;
         use std::boxed::Box;
@@ -109,7 +109,7 @@ mod tests {
             let ptr = Box::into_raw(heap);
 
             let bit_string = BitString::new(ptr as usize, start_bit, num_of_bits);
-            assert_eq!(bit_string.bits_at_byte(idx), correct_value);
+            assert_eq!(bit_string.bits_at_section(idx), correct_value);
 
             unsafe {
                 let _heap: Box<Heap> = Box::from_raw(ptr);
