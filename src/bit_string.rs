@@ -134,7 +134,7 @@ mod tests {
 
             #[test]
             fn index_below_range() -> () {
-                common(8, 8, 0, 0);
+                common(128, 128, 0, 0);
             }
         }
         mod more_than_a_byte {
