@@ -103,7 +103,7 @@ mod tests {
             }
         }
 
-        mod within_a_byte {
+        mod within_a_section {
             use super::*;
 
             #[test]
@@ -141,7 +141,7 @@ mod tests {
                 common(128, 128, 0, 0);
             }
         }
-        mod more_than_a_byte {
+        mod more_than_a_section {
             use super::*;
 
             #[test]
