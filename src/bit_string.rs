@@ -174,7 +174,7 @@ mod tests {
 
             #[test]
             fn tail_section_1() -> () {
-                common(3, 20, 2, 0b01111111);
+                common(3, 260, 2, 0b1111111);
             }
 
             #[test]
