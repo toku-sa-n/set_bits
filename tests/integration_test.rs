@@ -86,6 +86,11 @@ mod set {
     fn start_bit_more_than_127_2() -> () {
         test(154, 5, 1, 0b01111100_00000000_00000000_00000000);
     }
+
+    #[test]
+    fn index_over_range() -> () {
+        test(0, 128, 1, 0);
+    }
 }
 
 #[cfg(test)]
