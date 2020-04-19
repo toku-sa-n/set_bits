@@ -3,10 +3,10 @@ use set_bits;
 fn test_general<T: Fn(usize, usize, usize) -> ()>(
     start_bit: usize,
     num_of_bits: usize,
-    correct_value: u32,
+    correct_value: u128,
     func: T,
 ) -> () {
-    let byte: Box<u32> = Box::new(0);
+    let byte: Box<u128> = Box::new(0);
     let ptr = Box::into_raw(byte);
 
     func(ptr as usize, start_bit, num_of_bits);
@@ -21,7 +21,7 @@ fn test_general<T: Fn(usize, usize, usize) -> ()>(
 #[cfg(test)]
 mod set {
     use super::*;
-    fn test(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+    fn test(start_bit: usize, num_of_bits: usize, correct_value: u128) -> () {
         let func = |address, start_bit, num_of_bits| {
             set_bits::set(address, start_bit, num_of_bits);
         };
@@ -89,10 +89,10 @@ mod set {
 mod clear {
     use super::*;
 
-    fn test(start_bit: usize, num_of_bits: usize, correct_value: u32) -> () {
+    fn test(start_bit: usize, num_of_bits: usize, correct_value: u128) -> () {
         let func = |address, start_bit, num_of_bits| {
             unsafe {
-                *(address as *mut u32) = !0;
+                *(address as *mut u128) = !0;
             }
             set_bits::clear(address, start_bit, num_of_bits);
         };
