@@ -20,7 +20,7 @@ impl BitString {
         self.num_of_bits
     }
 
-    pub fn len_in_section(&self) -> usize {
+    pub fn num_of_sections(&self) -> usize {
         if self.num_of_bits == 0 {
             0
         } else {
