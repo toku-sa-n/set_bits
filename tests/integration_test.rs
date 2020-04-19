@@ -74,7 +74,7 @@ mod set {
 
     #[test]
     fn no_bits_2() -> () {
-        test(8, 0, 0, 0);
+        test(128, 0, 0, 0);
     }
 
     #[test]
