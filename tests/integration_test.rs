@@ -53,7 +53,7 @@ mod set {
     }
 
     #[test]
-    fn all_bits_of_a_byte_2() -> () {
+    fn all_bits_of_a_section_2() -> () {
         test(128, 128, 1, !0);
     }
 
