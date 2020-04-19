@@ -20,7 +20,7 @@ impl BitString {
         self.num_of_bits
     }
 
-    pub fn len_in_section(&self) -> usize {
+    pub fn num_of_sections(&self) -> usize {
         if self.num_of_bits == 0 {
             0
         } else {
@@ -86,7 +86,7 @@ impl BitString {
     }
 
     pub fn get_address_of_section(&self, idx: usize) -> usize {
-        self.start_address + idx
+        self.start_address + idx * NUM_OF_BITS / 8
     }
 }
 
@@ -168,6 +168,11 @@ mod tests {
             }
 
             #[test]
+            fn head_section_3() -> () {
+                common(41, 119, 0, 0xFFFFFFFFFFFFFFFFFFFFFE0000000000);
+            }
+
+            #[test]
             fn head_all_bits() -> () {
                 common(0, NUM_OF_BITS * 4, 0, !0);
             }
@@ -180,6 +185,11 @@ mod tests {
             #[test]
             fn tail_section_2() -> () {
                 common(5, 128, 1, 0b11111);
+            }
+
+            #[test]
+            fn tail_section_3() -> () {
+                common(41, 119, 1, 0xFFFFFFFF);
             }
 
             #[test]
