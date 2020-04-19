@@ -54,7 +54,7 @@ mod set {
 
     #[test]
     fn all_bits_of_a_byte_2() -> () {
-        test(9, 128, 1, !0);
+        test(128, 128, 1, !0);
     }
 
     #[test]
