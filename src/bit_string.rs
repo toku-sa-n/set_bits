@@ -86,7 +86,7 @@ impl BitString {
     }
 
     pub fn get_address_of_section(&self, idx: usize) -> usize {
-        self.start_address + idx * 16
+        self.start_address + idx * NUM_OF_BITS / 8
     }
 }
 
