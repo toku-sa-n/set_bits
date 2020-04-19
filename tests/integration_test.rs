@@ -7,11 +7,6 @@ fn test_general<T: Fn(usize, usize, usize) -> ()>(
     correct_value: u128,
     func: T,
 ) -> () {
-    #[repr(C, packed)]
-    struct Heap {
-        _heap: [u128; 4],
-    };
-
     let byte: Box<[u128; 4]> = Box::new([0; 4]);
     let ptr = Box::into_raw(byte);
 
