@@ -136,16 +136,6 @@ mod clear {
     }
 
     #[test]
-    fn all_bits_of_u32() -> () {
-        test(0, 32, 0, 0);
-    }
-
-    #[test]
-    fn start_bit_more_than_7_1() -> () {
-        test(10, 3, 0, 0b11111111_11111111_11100011_11111111);
-    }
-
-    #[test]
     fn all_bits_within_a_byte() -> () {
         test(0, 8, 0, 0xffffff00);
     }
