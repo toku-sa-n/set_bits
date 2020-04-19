@@ -131,8 +131,8 @@ mod clear {
     }
 
     #[test]
-    fn more_than_a_byte_2() -> () {
-        test(11, 10, 0, 0b11111111_11100000_00000111_11111111);
+    fn more_than_a_section_2() -> () {
+        test(192, 256, 1, 0xFFFFFFFFFFFFFFFF);
     }
 
     #[test]
