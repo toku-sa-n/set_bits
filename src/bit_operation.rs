@@ -30,12 +30,12 @@ pub fn bit_operation(bit_string: bit_string::BitString, operation: Operation) ->
     }
 }
 
-fn edit_bit<T>(bit_string: bit_string::BitString, edit_bit: T) -> ()
+fn edit_bit<T>(bit_string: bit_string::BitString, edit_func: T) -> ()
 where
     T: EditBitFunc,
 {
-    for i in 0..bit_string.len_in_section() {
-        edit_bit(
+    for i in 0..bit_string.num_of_sections() {
+        edit_func(
             bit_string.get_address_of_section(i) as DestPtr,
             bit_string.bits_at_section(i),
         );
