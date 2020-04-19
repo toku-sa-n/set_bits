@@ -136,8 +136,8 @@ mod clear {
     }
 
     #[test]
-    fn all_bits_within_a_byte() -> () {
-        test(0, 8, 0, 0xffffff00);
+    fn all_bits_within_a_section() -> () {
+        test(0, 128, 0, 0);
     }
 
     #[test]
