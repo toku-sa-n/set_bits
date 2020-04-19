@@ -91,6 +91,11 @@ mod set {
     fn index_over_range() -> () {
         test(0, 128, 1, 0);
     }
+
+    #[test]
+    fn index_below_range() -> () {
+        test(128, 128, 0, 0);
+    }
 }
 
 #[cfg(test)]
