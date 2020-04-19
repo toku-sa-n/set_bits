@@ -119,8 +119,8 @@ mod clear {
     }
 
     #[test]
-    fn within_a_byte_2() -> () {
-        test(1, 4, 0, 0b11111111_11111111_11111111_11100001);
+    fn within_a_section_2() -> () {
+        test(1, 4, 0, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE1);
     }
 
     #[test]
