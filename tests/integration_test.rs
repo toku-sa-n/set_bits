@@ -105,7 +105,9 @@ mod clear {
     fn test(start_bit: usize, num_of_bits: usize, index: isize, correct_value: u128) -> () {
         let func = |address, start_bit, num_of_bits| {
             unsafe {
-                *(address as *mut u128) = !0;
+                for i in 0..4 {
+                    *((address as *mut u128).offset(i)) = !0;
+                }
             }
             set_bits::clear(address, start_bit, num_of_bits);
         };
