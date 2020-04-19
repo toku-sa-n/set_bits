@@ -199,6 +199,11 @@ mod tests {
             }
 
             #[test]
+            fn index_over_range() -> () {
+                common(0, NUM_OF_BITS * 3, 3, 0);
+            }
+
+            #[test]
             fn index_below_range() -> () {
                 common(128, 256, 0, 0);
             }
