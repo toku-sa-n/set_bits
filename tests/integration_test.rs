@@ -68,8 +68,8 @@ mod set {
     }
 
     #[test]
-    fn more_than_a_byte_2() -> () {
-        test(6, 13, 0, 0b1111111111111000000);
+    fn more_than_a_section_2() -> () {
+        test(6, 400, 0, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC0);
     }
 
     #[test]
