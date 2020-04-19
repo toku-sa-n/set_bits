@@ -30,12 +30,12 @@ mod set {
     }
 
     #[test]
-    fn within_a_byte_1() -> () {
+    fn within_a_section_1() -> () {
         test(3, 2, 0b11000);
     }
 
     #[test]
-    fn within_a_byte_2() -> () {
+    fn within_a_section_2() -> () {
         test(1, 4, 0b11110);
     }
 
