@@ -12,11 +12,18 @@ fn test_general<T: Fn(usize, usize, usize) -> ()>(
         _heap: [u128; 4],
     };
 
-    let byte: Box<Heap> = Box::new(Heap { _heap: [0; 4] });
+    let byte: Box<[u128; 4]> = Box::new([0; 4]);
     let ptr = Box::into_raw(byte);
 
     func(ptr as usize, start_bit, num_of_bits);
     unsafe {
+        for i in 0..4 {
+            println!(
+                "{:X}: {:X}",
+                (ptr as *const u128).offset(i) as usize,
+                *((ptr as *const u128).offset(i))
+            );
+        }
         assert_eq!(*((ptr as *const u128).offset(index)), correct_value);
     }
 
@@ -52,7 +59,7 @@ mod set {
 
     #[test]
     fn all_bits_of_a_byte_2() -> () {
-        test(8, 8, 0, 0xff00);
+        test(9, 128, 1, !0);
     }
 
     #[test]
