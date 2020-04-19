@@ -73,11 +73,6 @@ mod set {
     }
 
     #[test]
-    fn all_bits_of_u32() -> () {
-        test(0, 32, 0, 0xFFFFFFFF);
-    }
-
-    #[test]
     fn no_bits_2() -> () {
         test(8, 0, 0, 0);
     }
