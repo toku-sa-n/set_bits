@@ -78,8 +78,8 @@ mod set {
     }
 
     #[test]
-    fn start_bit_more_than_7_1() -> () {
-        test(10, 3, 0, 0b11100_00000000);
+    fn start_bit_more_than_127_1() -> () {
+        test(138, 3, 1, 0b11100_00000000);
     }
 
     #[test]
