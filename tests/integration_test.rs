@@ -40,8 +40,8 @@ mod set {
     }
 
     #[test]
-    fn all_bits_of_a_byte_1() -> () {
-        test(0, 8, 0b11111111);
+    fn all_bits_of_a_section_1() -> () {
+        test(0, 128, !0);
     }
 
     #[test]
