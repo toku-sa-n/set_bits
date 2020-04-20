@@ -19,8 +19,6 @@ impl Operation {
 
 pub const NUM_OF_BITS: usize = 128;
 
-pub trait EditBitFunc = Fn(DestPtr, SrcVal) -> ();
-
 pub fn bit_operation(bit_string: bit_string::BitString, operation: Operation) -> () {
     for i in 0..bit_string.num_of_sections() {
         operation.edit(
