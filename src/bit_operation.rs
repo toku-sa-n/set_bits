@@ -5,6 +5,9 @@ pub enum Operation {
     Clear,
 }
 
+type DestPtr = *mut u128;
+pub type SrcVal = u128;
+
 impl Operation {
     fn edit(&self, dest: DestPtr, bit_mask: SrcVal) -> () {
         match self {
@@ -14,8 +17,6 @@ impl Operation {
     }
 }
 
-type DestPtr = *mut u128;
-pub type SrcVal = u128;
 pub const NUM_OF_BITS: usize = 128;
 
 pub trait EditBitFunc = Fn(DestPtr, SrcVal) -> ();
