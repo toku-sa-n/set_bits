@@ -1,5 +1,7 @@
 # set\_bits
 
+[![Build Status](https://travis-ci.com/toku-sa-n/set_bits.svg?branch=master)](https://travis-ci.com/toku-sa-n/set_bits)
+
 set\_bits is a Rust library for setting and clearing bits on memory.
 
 ## Usage
