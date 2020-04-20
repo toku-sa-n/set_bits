@@ -5,6 +5,15 @@ pub enum Operation {
     Clear,
 }
 
+impl Operation {
+    fn edit(&self, dest: DestPtr, bit_mask: SrcVal) -> () {
+        match self {
+            Set => unsafe { *dest |= bit_mask },
+            Clear => unsafe { *dest &= !bit_mask },
+        }
+    }
+}
+
 type DestPtr = *mut u128;
 pub type SrcVal = u128;
 pub const NUM_OF_BITS: usize = 128;
