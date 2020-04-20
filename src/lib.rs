@@ -1,4 +1,3 @@
-#![feature(trait_alias)]
 #![feature(test)]
 #![no_std]
 
