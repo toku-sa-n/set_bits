@@ -1,6 +1,6 @@
 [package]
 name = "set_bits"
-version = "1.1.1"
+version = "1.2.0"
 authors = ["toku-sa-n <tokusan441@gmail.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
@@ -8,7 +8,7 @@ description = "Set and clear bits from specified address."
 documentation = "https://docs.rs/set_bits"
 readme = "README.md"
 repository = "https://github.com/toku-sa-n/set_bits"
-keywords = ["bit","os","memory"]
+keywords = ["deprecated"]
 categories = ["os"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
