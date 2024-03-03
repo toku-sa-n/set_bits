@@ -1,5 +1,9 @@
 # set\_bits
 
+**NOTE**: This library is no longer maintained. For access to physical memory,
+use the [accessor](https://crates.io/crates/accessor) crate, and for bit
+manipulation, use the [bit\_field](https://crates.io/crates/bit_field) crate.
+
 set\_bits is a Rust library for setting and clearing bits on memory.
 
 ## Usage
